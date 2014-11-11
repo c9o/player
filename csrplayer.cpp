@@ -59,26 +59,26 @@ csrplayer::csrplayer(QWidget *parent)
 
     connect(ui->openButton, SIGNAL(clicked()), this, SLOT(open()));
 
-    PlayerControls *controls = new PlayerControls(this);
-    controls->setState(player->state());
-    controls->setVolume(player->volume());
-    controls->setMuted(controls->isMuted());
+    //PlayerControls *controls = new PlayerControls(this);
+    ui->controls->setState(player->state());
+    ui->controls->setVolume(player->volume());
+    ui->controls->setMuted(ui->controls->isMuted());
 
-    connect(controls, SIGNAL(play()), player, SLOT(play()));
-    connect(controls, SIGNAL(pause()), player, SLOT(pause()));
-    connect(controls, SIGNAL(stop()), player, SLOT(stop()));
-    connect(controls, SIGNAL(next()), playlist, SLOT(next()));
-    connect(controls, SIGNAL(previous()), this, SLOT(previousClicked()));
-    connect(controls, SIGNAL(changeVolume(int)), player, SLOT(setVolume(int)));
-    connect(controls, SIGNAL(changeMuting(bool)), player, SLOT(setMuted(bool)));
+    connect(ui->controls, SIGNAL(play()), player, SLOT(play()));
+    connect(ui->controls, SIGNAL(pause()), player, SLOT(pause()));
+    connect(ui->controls, SIGNAL(stop()), player, SLOT(stop()));
+    connect(ui->controls, SIGNAL(next()), playlist, SLOT(next()));
+    connect(ui->controls, SIGNAL(previous()), this, SLOT(previousClicked()));
+    connect(ui->controls, SIGNAL(changeVolume(int)), player, SLOT(setVolume(int)));
+    connect(ui->controls, SIGNAL(changeMuting(bool)), player, SLOT(setMuted(bool)));
 
     //connect(ui->controls, SIGNAL(stop()), ui->videoWidget, SLOT(update()));
-    connect(controls, SIGNAL(stop()), videoWidget, SLOT(update()));
+    connect(ui->controls, SIGNAL(stop()), videoWidget, SLOT(update()));
 
     connect(player, SIGNAL(stateChanged(QMediaPlayer::State)),
-            controls, SLOT(setState(QMediaPlayer::State)));
-    connect(player, SIGNAL(volumeChanged(int)), controls, SLOT(setVolume(int)));
-    connect(player, SIGNAL(mutedChanged(bool)), controls, SLOT(setMuted(bool)));
+            ui->controls, SLOT(setState(QMediaPlayer::State)));
+    connect(player, SIGNAL(volumeChanged(int)), ui->controls, SLOT(setVolume(int)));
+    connect(player, SIGNAL(mutedChanged(bool)), ui->controls, SLOT(setMuted(bool)));
 
     //QBoxLayout *displayLayout = new QHBoxLayout;
     ui->displayLayout->addWidget(videoWidget, 2);
@@ -88,7 +88,7 @@ csrplayer::csrplayer(QWidget *parent)
     //ui->controlLayout->setMargin(0);
     //ui->controlLayout->addWidget(ui->openButton);
     //ui->controlLayout->addStretch(1);
-    ui->controlLayout->addWidget(controls);
+    //ui->controlLayout->addWidget(ui->controls);
     //ui->controlLayout->addStretch(1);
 
     //QBoxLayout *layout = new QVBoxLayout;
@@ -106,7 +106,7 @@ csrplayer::csrplayer(QWidget *parent)
                              tr("The QMediaPlayer object does not have a valid service.\n"\
                                 "Please check the media service plugins are installed."));
 
-        controls->setEnabled(false);
+        ui->controls->setEnabled(false);
         ui->playlistView->setEnabled(false);
         ui->openButton->setEnabled(false);
     }

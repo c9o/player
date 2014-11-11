@@ -208,6 +208,9 @@ QScrollBar::down-arrow:vertical {
          </widget>
         </item>
         <item>
+         <widget class="PlayerControls" name="controls" native="true"/>
+        </item>
+        <item>
          <widget class="QPushButton" name="closeButton">
           <property name="text">
            <string/>
@@ -231,6 +234,14 @@ QScrollBar::down-arrow:vertical {
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>PlayerControls</class>
+   <extends>QWidget</extends>
+   <header location="global">playercontrols.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections>
   <connection>
