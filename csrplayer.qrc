@@ -1,0 +1,39 @@
+<RCC>
+    <qresource prefix="/buttons">
+        <file>Resources/icon_buttons/ic_btn_pause_green.png</file>
+        <file>Resources/icon_buttons/ic_btn_play_green.png</file>
+        <file>Resources/icon_buttons/ic_btn_ff_green.png</file>
+        <file>Resources/icon_buttons/ic_btn_fr_green.png</file>
+        <file>Resources/icon_buttons/ic_btn_minimize_border.png</file>
+        <file>Resources/icon_buttons/ic_btn_stop_green.png</file>
+        <file>Resources/icon_buttons/ic_btn_ff.png</file>
+        <file>Resources/icon_buttons/ic_btn_fr.png</file>
+        <file>Resources/icon_buttons/ic_btn_next.png</file>
+        <file>Resources/icon_buttons/ic_btn_pause.png</file>
+        <file>Resources/icon_buttons/ic_btn_play.png</file>
+        <file>Resources/icon_buttons/ic_btn_previous.png</file>
+        <file>Resources/icon_buttons/ic_btn_stop.png</file>
+        <file>Resources/icon_buttons/ic_btn_up.png</file>
+        <file>Resources/icon_buttons/ic_close.png</file>
+        <file>Resources/icon_buttons/ic_btn_border_pressed.png</file>
+        <file>Resources/icon_buttons/ic_btn_border.png</file>
+        <file>Resources/icon_buttons/ic_slider_handle.png</file>
+        <file>Resources/icon_buttons/ic_scrollbar_down.png</file>
+        <file>Resources/icon_buttons/ic_scrollbar_up.png</file>
+        <file>Resources/icon_buttons/ic_vertical_scrollbar.png</file>
+        <file>Resources/icon_buttons/ic_btn_arrow_right.png</file>
+        <file>Resources/icon_buttons/ic_btn_repeat_all.png</file>
+        <file>Resources/icon_buttons/ic_btn_repeat_off.png</file>
+        <file>Resources/icon_buttons/ic_btn_repeat_one.png</file>
+        <file>Resources/icon_buttons/ic_btn_shuffle_off.png</file>
+        <file>Resources/icon_buttons/ic_btn_shuffle_on.png</file>
+    </qresource>
+    <qresource prefix="/others">
+        <file>Resources/others/icon_folder.png</file>
+        <file>Resources/others/icon_file.png</file>
+    </qresource>
+    <qresource prefix="/background">
+        <file>Resources/background/ic_background.png</file>
+        <file>Resources/background/ic_row_background.png</file>
+    </qresource>
+</RCC>

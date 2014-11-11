@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>csrplayer</class>
+ <widget class="QMainWindow" name="csrplayer">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>480</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+    <horstretch>1</horstretch>
+    <verstretch>1</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle">
+   <string>csrplayer</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QMainWindow
+{
+	border-image: url(:/background/Resources/background/ic_background.png)
+}
+QPushButton
+{
+	font: 18pt;
+	border-width: 4px;
+	border-image: url(:/buttons/Resources/icon_buttons/ic_btn_border.png)4;
+}
+
+QPushButton:pressed
+{
+	border-width: 4px;
+	border-image: url(:/buttons/Resources/icon_buttons/ic_btn_border_pressed.png)4;
+}
+
+QLabel
+{
+	font: 20pt;
+}
+
+QSlider::groove:horizontal {
+	height: 5px;/* the groove expands to the size of the slider by default. by giving it a height, it has a fixed size */
+	background-color: rgb(128, 185, 255);
+}
+
+QSlider::handle:horizontal {
+	border-image: url(:/buttons/Resources/icon_buttons/ic_slider_handle.png);
+	width:15px;
+	margin: -10px 0; /* handle is placed by default on the contents rect of the groove. Expand outside the groove */
+}
+
+QSlider::sub-page:horizontal {
+	background-color: rgb(0, 255, 0);
+}
+
+QScrollBar:vertical {
+     background: rgba(0, 0, 0, 0);
+     margin: 17px 0px 17px 0px;
+	 width: 20px;
+ }
+
+QScrollBar::handle:vertical {
+	border-image: url(:/buttons/Resources/icon_buttons/ic_vertical_scrollbar.png);
+}
+
+QScrollBar::add-line:vertical {
+     background: rgba(0, 0, 0, 0);
+     height: 20px;
+	 subcontrol-origin: margin;
+}
+
+ QScrollBar::sub-line:vertical {
+     background: rgba(0, 0, 0, 0)9;
+     height: 20px;
+     subcontrol-origin: margin;
+ }
+
+QScrollBar:up-arrow:vertical {
+     height: 20px;
+	 image:url(:/buttons/Resources/icon_buttons/ic_scrollbar_up.png);
+ }
+
+QScrollBar::down-arrow:vertical {
+     height: 20px;
+	 image:url(:/buttons/Resources/icon_buttons/ic_scrollbar_down.png);
+ }
+
+ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+     background: none;
+ }
+</string>
+  </property>
+  <widget class="QWidget" name="mainLayout">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout_5">
+    <property name="spacing">
+     <number>3</number>
+    </property>
+    <property name="topMargin">
+     <number>9</number>
+    </property>
+    <item>
+     <layout class="QVBoxLayout" name="layout" stretch="0,0,0">
+      <property name="spacing">
+       <number>10</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <layout class="QHBoxLayout" name="displayLayout">
+        <property name="sizeConstraint">
+         <enum>QLayout::SetDefaultConstraint</enum>
+        </property>
+        <item>
+         <widget class="QListView" name="playlistView">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>800</width>
+            <height>600</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true"/>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="hLayout">
+        <property name="sizeConstraint">
+         <enum>QLayout::SetDefaultConstraint</enum>
+        </property>
+        <item>
+         <widget class="QSlider" name="slider">
+          <property name="contextMenuPolicy">
+           <enum>Qt::DefaultContextMenu</enum>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="tickPosition">
+           <enum>QSlider::NoTicks</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="labelDuration">
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="controlLayout">
+        <item>
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QPushButton" name="openButton">
+          <property name="minimumSize">
+           <size>
+            <width>20</width>
+            <height>20</height>
+           </size>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normaloff>Resources/icon_buttons/ic_btn_open.png</normaloff>Resources/icon_buttons/ic_btn_open.png</iconset>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="closeButton">
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normaloff>Resources/icon_buttons/ic_close.png</normaloff>Resources/icon_buttons/ic_close.png</iconset>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <action name="actionExit">
+   <property name="text">
+    <string>E&amp;xit</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>actionExit</sender>
+   <signal>triggered()</signal>
+   <receiver>csrplayer</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
