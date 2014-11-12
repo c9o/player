@@ -68,7 +68,7 @@ private:
     //QLabel *labelDuration;
 
     PlaylistModel *playlistModel;
-    //QAbstractItemView *playlistView;
+    QAbstractItemView *playlistView;
     QString trackInfo;
     QString statusInfo;
     qint64 duration;

@@ -121,31 +121,6 @@ QScrollBar::down-arrow:vertical {
         <property name="sizeConstraint">
          <enum>QLayout::SetDefaultConstraint</enum>
         </property>
-        <item>
-         <widget class="QListView" name="playlistView">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>800</width>
-            <height>600</height>
-           </size>
-          </property>
-          <property name="styleSheet">
-           <string notr="true"/>
-          </property>
-         </widget>
-        </item>
        </layout>
       </item>
       <item>
@@ -191,6 +166,9 @@ QScrollBar::down-arrow:vertical {
          </spacer>
         </item>
         <item>
+         <widget class="PlayerControls" name="controls" native="true"/>
+        </item>
+        <item>
          <widget class="QPushButton" name="openButton">
           <property name="minimumSize">
            <size>
@@ -199,25 +177,14 @@ QScrollBar::down-arrow:vertical {
            </size>
           </property>
           <property name="text">
-           <string/>
-          </property>
-          <property name="icon">
-           <iconset>
-            <normaloff>Resources/icon_buttons/ic_btn_open.png</normaloff>Resources/icon_buttons/ic_btn_open.png</iconset>
+           <string>Open</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="PlayerControls" name="controls" native="true"/>
-        </item>
-        <item>
          <widget class="QPushButton" name="closeButton">
           <property name="text">
-           <string/>
-          </property>
-          <property name="icon">
-           <iconset>
-            <normaloff>Resources/icon_buttons/ic_close.png</normaloff>Resources/icon_buttons/ic_close.png</iconset>
+           <string>Close</string>
           </property>
          </widget>
         </item>

@@ -42,11 +42,11 @@ csrplayer::csrplayer(QWidget *parent)
     playlistModel->setPlaylist(playlist);
 //! [2]
 
-    //playlistView = new QListView(this);
-    ui->playlistView->setModel(playlistModel);
-    ui->playlistView->setCurrentIndex(playlistModel->index(playlist->currentIndex(), 0));
+    playlistView = new QListView(this);
+    playlistView->setModel(playlistModel);
+    playlistView->setCurrentIndex(playlistModel->index(playlist->currentIndex(), 0));
 
-    connect(ui->playlistView, SIGNAL(activated(QModelIndex)), this, SLOT(jump(QModelIndex)));
+    connect(playlistView, SIGNAL(activated(QModelIndex)), this, SLOT(jump(QModelIndex)));
 
     //slider = new QSlider(Qt::Horizontal, this);
     ui->slider->setRange(0, player->duration() / 1000);
@@ -82,7 +82,7 @@ csrplayer::csrplayer(QWidget *parent)
 
     //QBoxLayout *displayLayout = new QHBoxLayout;
     ui->displayLayout->addWidget(videoWidget, 2);
-    //ui->displayLayout->addWidget(ui->playlistView);
+    ui->displayLayout->addWidget(playlistView);
 
     //QBoxLayout *controlLayout = new QHBoxLayout;
     //ui->controlLayout->setMargin(0);
@@ -107,7 +107,7 @@ csrplayer::csrplayer(QWidget *parent)
                                 "Please check the media service plugins are installed."));
 
         ui->controls->setEnabled(false);
-        ui->playlistView->setEnabled(false);
+        playlistView->setEnabled(false);
         ui->openButton->setEnabled(false);
     }
 
@@ -124,8 +124,15 @@ csrplayer::~csrplayer()
 
 void csrplayer::open()
 {
-    QStringList fileNames = QFileDialog::getOpenFileNames(this, tr("Open Files"));
+    //QStringList fileNames = QFileDialog::getOpenFileNames(this, tr("Open Files"));
+	QFileDialog *fileDialog = new QFileDialog(this);
+	fileDialog->setWindowTitle(tr("Open Image"));
+	fileDialog->setDirectory(".");
+	fileDialog->resize(320,240);
+	if(fileDialog->exec() == QDialog::Accepted) { 
+                QStringList fileNames = fileDialog->selectedFiles();
     addToPlaylist(fileNames);
+	}
 }
 
 void csrplayer::on_closeButton_clicked()
@@ -203,7 +210,7 @@ void csrplayer::jump(const QModelIndex &index)
 
 void csrplayer::playlistPositionChanged(int currentItem)
 {
-    ui->playlistView->setCurrentIndex(playlistModel->index(currentItem, 0));
+    playlistView->setCurrentIndex(playlistModel->index(currentItem, 0));
 }
 
 void csrplayer::seek(int seconds)
