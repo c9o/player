@@ -44,6 +44,8 @@
 #include <QMediaPlayer>
 #include <QWidget>
 
+#define DEBUG_OPEN
+
 QT_BEGIN_NAMESPACE
 class QAbstractButton;
 class QAbstractSlider;

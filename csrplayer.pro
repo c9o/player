@@ -10,11 +10,13 @@ QT += network \
 
 HEADERS = \
     csrplayer.h \
+    myslider.h \
     playercontrols.h \
     playlistmodel.h \
     videowidget.h
 SOURCES = main.cpp \
     csrplayer.cpp \
+    myslider.cpp \
     playercontrols.cpp \
     playlistmodel.cpp \
     videowidget.cpp
@@ -23,8 +25,7 @@ FORMS    += csrplayer.ui
 
 OTHER_FILES +=
 
-RESOURCES += \
-    csrplayer.qrc
+RESOURCES += csrplayer.qrc
 
 target.path = $$[QT_INSTALL_EXAMPLES]/multimediawidgets/player
 INSTALLS += target

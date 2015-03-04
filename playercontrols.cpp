@@ -46,6 +46,13 @@
 #include <QToolButton>
 #include <QComboBox>
 
+#ifdef DEBUG_OPEN
+#include <QDebug>
+#endif
+
+#define SIZE_DEFAULT 60
+#define ICON_SIZE_DEFAULT 60
+
 PlayerControls::PlayerControls(QWidget *parent)
     : QWidget(parent)
     , playerState(QMediaPlayer::StoppedState)
@@ -59,32 +66,47 @@ PlayerControls::PlayerControls(QWidget *parent)
 {
     playButton = new QToolButton(this);
     playButton->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
+	playButton->setIconSize(QSize(ICON_SIZE_DEFAULT, ICON_SIZE_DEFAULT));
+	playButton->setMinimumSize(QSize(SIZE_DEFAULT, SIZE_DEFAULT));
 
     connect(playButton, SIGNAL(clicked()), this, SLOT(playClicked()));
 
     stopButton = new QToolButton(this);
     stopButton->setIcon(style()->standardIcon(QStyle::SP_MediaStop));
+	stopButton->setIconSize(QSize(ICON_SIZE_DEFAULT, ICON_SIZE_DEFAULT));
     stopButton->setEnabled(false);
+	stopButton->setMinimumSize(QSize(SIZE_DEFAULT, SIZE_DEFAULT));
 
     connect(stopButton, SIGNAL(clicked()), this, SIGNAL(stop()));
 
     nextButton = new QToolButton(this);
     nextButton->setIcon(style()->standardIcon(QStyle::SP_MediaSkipForward));
+	nextButton->setIconSize(QSize(ICON_SIZE_DEFAULT, ICON_SIZE_DEFAULT));
+	nextButton->setMinimumSize(QSize(SIZE_DEFAULT, SIZE_DEFAULT));
 
     connect(nextButton, SIGNAL(clicked()), this, SIGNAL(next()));
 
     previousButton = new QToolButton(this);
     previousButton->setIcon(style()->standardIcon(QStyle::SP_MediaSkipBackward));
+	previousButton->setIconSize(QSize(ICON_SIZE_DEFAULT, ICON_SIZE_DEFAULT));
+	previousButton->setMinimumSize(QSize(SIZE_DEFAULT, SIZE_DEFAULT));
 
     connect(previousButton, SIGNAL(clicked()), this, SIGNAL(previous()));
 
     muteButton = new QToolButton(this);
     muteButton->setIcon(style()->standardIcon(QStyle::SP_MediaVolume));
+	muteButton->setIconSize(QSize(ICON_SIZE_DEFAULT, ICON_SIZE_DEFAULT));
+	muteButton->setMinimumSize(QSize(SIZE_DEFAULT, SIZE_DEFAULT));
 
     connect(muteButton, SIGNAL(clicked()), this, SLOT(muteClicked()));
 
     volumeSlider = new QSlider(Qt::Horizontal, this);
     volumeSlider->setRange(0, 100);
+    QSizePolicy sizePolicy2(QSizePolicy::Preferred, QSizePolicy::Preferred);
+    sizePolicy2.setHorizontalStretch(0);
+    sizePolicy2.setVerticalStretch(0);
+    sizePolicy2.setHeightForWidth(volumeSlider->sizePolicy().hasHeightForWidth());
+    volumeSlider->setSizePolicy(sizePolicy2);
 
     connect(volumeSlider, SIGNAL(sliderMoved(int)), this, SIGNAL(changeVolume(int)));
 
@@ -101,11 +123,17 @@ PlayerControls::PlayerControls(QWidget *parent)
 
 QMediaPlayer::State PlayerControls::state() const
 {
+#ifdef DEBUG_OPEN
+	qDebug() << "Player state: " << playerState;
+#endif
     return playerState;
 }
 
 void PlayerControls::setState(QMediaPlayer::State state)
 {
+#ifdef DEBUG_OPEN
+	qDebug() << "Set player state from " << playerState << " to " << state;
+#endif
     if (state != playerState) {
         playerState = state;
 
@@ -133,6 +161,9 @@ int PlayerControls::volume() const
 
 void PlayerControls::setVolume(int volume)
 {
+#ifdef DEBUG_OPEN
+	qDebug() << "Set volume " << volume;
+#endif
     if (volumeSlider)
         volumeSlider->setValue(volume);
 }
@@ -144,6 +175,9 @@ bool PlayerControls::isMuted() const
 
 void PlayerControls::setMuted(bool muted)
 {
+#ifdef DEBUG_OPEN
+	qDebug() << "Set muted " << muted;
+#endif
     if (muted != playerMuted) {
         playerMuted = muted;
 
@@ -155,6 +189,9 @@ void PlayerControls::setMuted(bool muted)
 
 void PlayerControls::playClicked()
 {
+#ifdef DEBUG_OPEN
+	qDebug() << "Play button pressed";
+#endif
     switch (playerState) {
     case QMediaPlayer::StoppedState:
     case QMediaPlayer::PausedState:
@@ -168,5 +205,8 @@ void PlayerControls::playClicked()
 
 void PlayerControls::muteClicked()
 {
+#ifdef DEBUG_OPEN
+	qDebug() << "Mute button pressed";
+#endif
     emit changeMuting(!playerMuted);
 }

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>480</height>
+    <width>1024</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -22,77 +22,103 @@
   <property name="styleSheet">
    <string notr="true">QMainWindow
 {
-	border-image: url(:/background/Resources/background/ic_background.png)
+	background: none;
+	background-color: rgba(60, 60, 60,60);
 }
+
+QListView
+{
+	background: none;
+	background-color: rgba(200, 200, 200,200);
+}
+
+QHBoxLayout
+{
+	background: none;
+}
+
+QSlider
+{
+	background: none;
+}
+
 QPushButton
 {
 	font: 18pt;
+	background: none;
 	border-width: 4px;
-	border-image: url(:/buttons/Resources/icon_buttons/ic_btn_border.png)4;
 }
 
 QPushButton:pressed
 {
 	border-width: 4px;
-	border-image: url(:/buttons/Resources/icon_buttons/ic_btn_border_pressed.png)4;
+	background: none;
 }
 
 QLabel
 {
 	font: 20pt;
+	background: none;
+    color: rgb(220, 220, 220);
 }
 
 QSlider::groove:horizontal {
 	height: 5px;/* the groove expands to the size of the slider by default. by giving it a height, it has a fixed size */
-	background-color: rgb(128, 185, 255);
+	background: none;
+	background-color: rgb(10, 10, 10);
 }
 
 QSlider::handle:horizontal {
-	border-image: url(:/buttons/Resources/icon_buttons/ic_slider_handle.png);
+	border-image: url(:/icons/resources/ic_slider.png);
 	width:15px;
-	margin: -10px 0; /* handle is placed by default on the contents rect of the groove. Expand outside the groove */
+	height:15px;
+	margin: -5px -0px; /* handle is placed by default on the contents rect of the groove. Expand outside the groove */
+	background: none;
 }
 
 QSlider::sub-page:horizontal {
-	background-color: rgb(0, 255, 0);
+	background: none;
+	background-color: rgb(150, 150, 150);
 }
 
 QScrollBar:vertical {
-     background: rgba(0, 0, 0, 0);
-     margin: 17px 0px 17px 0px;
-	 width: 20px;
+	background: none;
+	background: rgba(0, 0, 0, 0);
+	margin: 17px 0px 17px 0px;
+	width: 20px;
  }
 
 QScrollBar::handle:vertical {
-	border-image: url(:/buttons/Resources/icon_buttons/ic_vertical_scrollbar.png);
+	background: none;
 }
 
 QScrollBar::add-line:vertical {
-     background: rgba(0, 0, 0, 0);
-     height: 20px;
-	 subcontrol-origin: margin;
+	background: none;
+	background: rgba(0, 0, 0, 0);
+	height: 20px;
+	subcontrol-origin: margin;
 }
 
  QScrollBar::sub-line:vertical {
-     background: rgba(0, 0, 0, 0)9;
-     height: 20px;
-     subcontrol-origin: margin;
+	background: none;
+	background: rgba(0, 0, 0, 0);
+	height: 20px;
+	subcontrol-origin: margin;
  }
 
 QScrollBar:up-arrow:vertical {
-     height: 20px;
-	 image:url(:/buttons/Resources/icon_buttons/ic_scrollbar_up.png);
+ 	height: 20px;
+	background: none;
  }
 
 QScrollBar::down-arrow:vertical {
-     height: 20px;
-	 image:url(:/buttons/Resources/icon_buttons/ic_scrollbar_down.png);
+	height: 20px;
+	background: none;
  }
 
  QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
      background: none;
- }
-</string>
+ }</string>
   </property>
   <widget class="QWidget" name="mainLayout">
    <property name="sizePolicy">
@@ -121,6 +147,34 @@ QScrollBar::down-arrow:vertical {
         <property name="sizeConstraint">
          <enum>QLayout::SetDefaultConstraint</enum>
         </property>
+        <item>
+         <widget class="VideoWidget" name="videoWidget" native="true"/>
+        </item>
+        <item>
+         <widget class="QListView" name="playlistView">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true"/>
+          </property>
+         </widget>
+        </item>
        </layout>
       </item>
       <item>
@@ -129,7 +183,13 @@ QScrollBar::down-arrow:vertical {
          <enum>QLayout::SetDefaultConstraint</enum>
         </property>
         <item>
-         <widget class="QSlider" name="slider">
+         <widget class="MySlider" name="slider">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="contextMenuPolicy">
            <enum>Qt::DefaultContextMenu</enum>
           </property>
@@ -157,9 +217,12 @@ QScrollBar::down-arrow:vertical {
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::MinimumExpanding</enum>
+          </property>
           <property name="sizeHint" stdset="0">
            <size>
-            <width>40</width>
+            <width>20</width>
             <height>20</height>
            </size>
           </property>
@@ -170,21 +233,51 @@ QScrollBar::down-arrow:vertical {
         </item>
         <item>
          <widget class="QPushButton" name="openButton">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="minimumSize">
            <size>
-            <width>20</width>
-            <height>20</height>
+            <width>50</width>
+            <height>50</height>
            </size>
           </property>
           <property name="text">
-           <string>Open</string>
+           <string/>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>50</width>
+            <height>50</height>
+           </size>
           </property>
          </widget>
         </item>
         <item>
          <widget class="QPushButton" name="closeButton">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>50</width>
+            <height>50</height>
+           </size>
+          </property>
           <property name="text">
-           <string>Close</string>
+           <string/>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>50</width>
+            <height>50</height>
+           </size>
           </property>
          </widget>
         </item>
@@ -207,6 +300,17 @@ QScrollBar::down-arrow:vertical {
    <extends>QWidget</extends>
    <header location="global">playercontrols.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>VideoWidget</class>
+   <extends>QWidget</extends>
+   <header location="global">videowidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>MySlider</class>
+   <extends>QSlider</extends>
+   <header>myslider.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

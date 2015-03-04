@@ -42,6 +42,7 @@ private slots:
 
     void previousClicked();
 
+    void setOpenEnabled(QMediaPlayer::State state);
     void seek(int seconds);
     void jump(const QModelIndex &index);
     void playlistPositionChanged(int);
@@ -62,13 +63,9 @@ private:
     Ui::csrplayer *ui;
     QMediaPlayer *player;
     QMediaPlaylist *playlist;
-    VideoWidget *videoWidget;
     QLabel *coverLabel;
-    //QSlider *slider;
-    //QLabel *labelDuration;
 
     PlaylistModel *playlistModel;
-    QAbstractItemView *playlistView;
     QString trackInfo;
     QString statusInfo;
     qint64 duration;

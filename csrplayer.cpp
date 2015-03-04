@@ -9,13 +9,18 @@
 #include <QMediaMetaData>
 #include <QtWidgets>
 
+#ifdef DEBUG_OPEN
+#include <QDebug>
+#endif
+
 csrplayer::csrplayer(QWidget *parent)
     : QMainWindow(parent)
-    , videoWidget(0)
-    , coverLabel(0)
-    //, slider(0)
 	, ui(new Ui::csrplayer)
+    , coverLabel(0)
 {
+#ifdef DEBUG_OPEN
+	qDebug() << "player created";
+#endif
 	ui->setupUi(this);
 //! [create-objs]
     player = new QMediaPlayer(this);
@@ -35,31 +40,31 @@ csrplayer::csrplayer(QWidget *parent)
     connect(player, SIGNAL(error(QMediaPlayer::Error)), this, SLOT(displayErrorMessage()));
 
 //! [2]
-    videoWidget = new VideoWidget(this);
-    player->setVideoOutput(videoWidget);
+    player->setVideoOutput(ui->videoWidget);
 
     playlistModel = new PlaylistModel(this);
     playlistModel->setPlaylist(playlist);
 //! [2]
 
-    playlistView = new QListView(this);
-    playlistView->setModel(playlistModel);
-    playlistView->setCurrentIndex(playlistModel->index(playlist->currentIndex(), 0));
+    ui->playlistView->setModel(playlistModel);
+	ui->playlistView->setStyleSheet ("font: 24pt \"Courier\";");
+    ui->playlistView->setCurrentIndex(playlistModel->index(playlist->currentIndex(), 0));
 
-    connect(playlistView, SIGNAL(activated(QModelIndex)), this, SLOT(jump(QModelIndex)));
+    connect(ui->playlistView, SIGNAL(activated(QModelIndex)), this, SLOT(jump(QModelIndex)));
 
-    //slider = new QSlider(Qt::Horizontal, this);
     ui->slider->setRange(0, player->duration() / 1000);
 
-    //labelDuration = new QLabel(this);
-    connect(ui->slider, SIGNAL(sliderMoved(int)), this, SLOT(seek(int)));
+    connect(ui->slider, SIGNAL(valueChanged(int)), this, SLOT(seek(int)));
 
-
-    //QPushButton *openButton = new QPushButton(tr("Open"), this);
-
+    ui->openButton->setIcon(style()->standardIcon(QStyle::SP_ComputerIcon));
+	ui->openButton->setIconSize(QSize(60, 60));
+	ui->openButton->setEnabled(true);
+    connect(player, SIGNAL(stateChanged(QMediaPlayer::State)),
+            this, SLOT(setOpenEnabled(QMediaPlayer::State)));
+    ui->closeButton->setIcon(style()->standardIcon(QStyle::SP_DialogCloseButton));
+	ui->closeButton->setIconSize(QSize(60, 60));
     connect(ui->openButton, SIGNAL(clicked()), this, SLOT(open()));
 
-    //PlayerControls *controls = new PlayerControls(this);
     ui->controls->setState(player->state());
     ui->controls->setVolume(player->volume());
     ui->controls->setMuted(ui->controls->isMuted());
@@ -72,34 +77,12 @@ csrplayer::csrplayer(QWidget *parent)
     connect(ui->controls, SIGNAL(changeVolume(int)), player, SLOT(setVolume(int)));
     connect(ui->controls, SIGNAL(changeMuting(bool)), player, SLOT(setMuted(bool)));
 
-    //connect(ui->controls, SIGNAL(stop()), ui->videoWidget, SLOT(update()));
-    connect(ui->controls, SIGNAL(stop()), videoWidget, SLOT(update()));
+    connect(ui->controls, SIGNAL(stop()), ui->videoWidget, SLOT(update()));
 
     connect(player, SIGNAL(stateChanged(QMediaPlayer::State)),
             ui->controls, SLOT(setState(QMediaPlayer::State)));
     connect(player, SIGNAL(volumeChanged(int)), ui->controls, SLOT(setVolume(int)));
     connect(player, SIGNAL(mutedChanged(bool)), ui->controls, SLOT(setMuted(bool)));
-
-    //QBoxLayout *displayLayout = new QHBoxLayout;
-    ui->displayLayout->addWidget(videoWidget, 2);
-    ui->displayLayout->addWidget(playlistView);
-
-    //QBoxLayout *controlLayout = new QHBoxLayout;
-    //ui->controlLayout->setMargin(0);
-    //ui->controlLayout->addWidget(ui->openButton);
-    //ui->controlLayout->addStretch(1);
-    //ui->controlLayout->addWidget(ui->controls);
-    //ui->controlLayout->addStretch(1);
-
-    //QBoxLayout *layout = new QVBoxLayout;
-    //ui->layout->addLayout(ui->displayLayout);
-    //QHBoxLayout *hLayout = new QHBoxLayout;
-    //ui->hLayout->addWidget(ui->slider);
-    //ui->hLayout->addWidget(ui->labelDuration);
-    //ui->layout->addLayout(ui->hLayout);
-    //ui->layout->addLayout(ui->controlLayout);
-
-    //setLayout(ui->layout);
 
     if (!player->isAvailable()) {
         QMessageBox::warning(this, tr("Service not available"),
@@ -107,8 +90,7 @@ csrplayer::csrplayer(QWidget *parent)
                                 "Please check the media service plugins are installed."));
 
         ui->controls->setEnabled(false);
-        playlistView->setEnabled(false);
-        ui->openButton->setEnabled(false);
+        ui->playlistView->setEnabled(false);
     }
 
     metaDataChanged();
@@ -120,28 +102,69 @@ csrplayer::csrplayer(QWidget *parent)
 
 csrplayer::~csrplayer()
 {
+#ifdef DEBUG_OPEN
+	qDebug() << "Player disconstructed";
+#endif
+	delete ui;
+	delete player;
+	delete playlist;
+	delete coverLabel;
+	delete playlistModel;
 }
 
 void csrplayer::open()
 {
-    //QStringList fileNames = QFileDialog::getOpenFileNames(this, tr("Open Files"));
+#ifdef DEBUG_OPEN
+	qDebug() << "Open button pressed";
+	qDebug() << ui->videoWidget->geometry();
+#endif
+
+#if 0
+    QStringList fileNames = QFileDialog::getOpenFileNames(this, tr("Open Files"));
+    addToPlaylist(fileNames);
+#else
 	QFileDialog *fileDialog = new QFileDialog(this);
-	fileDialog->setWindowTitle(tr("Open Image"));
-	fileDialog->setDirectory(".");
-	fileDialog->resize(320,240);
+	fileDialog->setWindowTitle(tr("Open File"));
+	fileDialog->setDirectory("/media/mmcblk0p6/");
+	fileDialog->setStyleSheet ("font: 32pt \"Courier\";");
+	fileDialog->resize(1024, 600);
+	fileDialog->setViewMode(QFileDialog::List);
 	if(fileDialog->exec() == QDialog::Accepted) { 
                 QStringList fileNames = fileDialog->selectedFiles();
     addToPlaylist(fileNames);
 	}
+#endif
+	player->setOverlay(ui->videoWidget->geometry().x(), ui->videoWidget->geometry().y(), ui->videoWidget->geometry().width(), ui->videoWidget->geometry().height());
+}
+
+void csrplayer::setOpenEnabled(QMediaPlayer::State state)
+{
+    switch (state) {
+		case QMediaPlayer::StoppedState:
+		ui->openButton->setEnabled(true);
+        break;
+        case QMediaPlayer::PlayingState:
+        ui->openButton->setEnabled(false);
+        break;
+        case QMediaPlayer::PausedState:
+        ui->openButton->setEnabled(false);
+        break;
+		}
 }
 
 void csrplayer::on_closeButton_clicked()
 {
+#ifdef DEBUG_OPEN
+	qDebug() << "Close button pressed";
+#endif
 	close();
 }
 
 void csrplayer::addToPlaylist(const QStringList& fileNames)
 {
+#ifdef DEBUG_OPEN
+	qDebug() << "Add" << fileNames << " to playlist";
+#endif
     foreach (QString const &argument, fileNames) {
         QFileInfo fileInfo(argument);
         if (fileInfo.exists()) {
@@ -192,6 +215,9 @@ void csrplayer::metaDataChanged()
 
 void csrplayer::previousClicked()
 {
+#ifdef DEBUG_OPEN
+	qDebug() << "Previous button pressed";
+#endif
     // Go to previous track if we are within the first 5 seconds of playback
     // Otherwise, seek to the beginning.
     if(player->position() <= 5000)
@@ -210,17 +236,23 @@ void csrplayer::jump(const QModelIndex &index)
 
 void csrplayer::playlistPositionChanged(int currentItem)
 {
-    playlistView->setCurrentIndex(playlistModel->index(currentItem, 0));
+    ui->playlistView->setCurrentIndex(playlistModel->index(currentItem, 0));
 }
 
 void csrplayer::seek(int seconds)
 {
+#ifdef DEBUG_OPEN
+	qDebug() << "Seek to" << seconds << " seconds";
+#endif
     player->setPosition(seconds * 1000);
 }
 
 void csrplayer::statusChanged(QMediaPlayer::MediaStatus status)
 {
     handleCursor(status);
+#ifdef DEBUG_OPEN
+	qDebug() << "Status change to" << status;
+#endif
 
     // handle status message
     switch (status) {
@@ -263,7 +295,7 @@ void csrplayer::bufferingProgress(int progress)
     setStatusInfo(tr("Buffering %4%").arg(progress));
 }
 
-void csrplayer::videoAvailableChanged(bool available)
+void csrplayer::videoAvailableChanged(bool )
 {
 }
 
