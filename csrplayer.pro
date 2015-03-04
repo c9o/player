@@ -10,13 +10,13 @@ QT += network \
 
 HEADERS = \
     csrplayer.h \
-    myslider.h \
+    clickslider.h \
     playercontrols.h \
     playlistmodel.h \
     videowidget.h
 SOURCES = main.cpp \
     csrplayer.cpp \
-    myslider.cpp \
+    clickslider.cpp \
     playercontrols.cpp \
     playlistmodel.cpp \
     videowidget.cpp

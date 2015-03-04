@@ -1,18 +1,18 @@
 /**********************
- ** myslider.cpp
+ ** clickslider.cpp
  **********************/
 #include <QtGui>
 #include <QStyleOptionSlider>
 #include <QDebug>
-#include "myslider.h"
+#include "clickslider.h"
 
-MySlider::MySlider( QWidget * parent) :QSlider(parent)
+ClickSlider::ClickSlider( QWidget * parent) :QSlider(parent)
 {
 
 }
 
 /*
-   void MySlider::mousePressEvent ( QMouseEvent * mouseEvent )
+   void ClickSlider::mousePressEvent ( QMouseEvent * mouseEvent )
    {
    if(mouseEvent->button()==Qt::LeftButton && isEnabled())
    {
@@ -29,7 +29,7 @@ emit(sliderMoved(pos));
 }
  */
 
-void MySlider::mousePressEvent ( QMouseEvent * event )
+void ClickSlider::mousePressEvent ( QMouseEvent * event )
 {
 	QStyleOptionSlider opt;
 	initStyleOption(&opt);

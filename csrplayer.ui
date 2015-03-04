@@ -183,7 +183,7 @@ QScrollBar::down-arrow:vertical {
          <enum>QLayout::SetDefaultConstraint</enum>
         </property>
         <item>
-         <widget class="MySlider" name="slider">
+         <widget class="ClickSlider" name="slider">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -308,9 +308,9 @@ QScrollBar::down-arrow:vertical {
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>MySlider</class>
+   <class>ClickSlider</class>
    <extends>QSlider</extends>
-   <header>myslider.h</header>
+   <header>clickslider.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

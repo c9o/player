@@ -1,19 +1,19 @@
 /**********************
- ** myslider.h
+ ** clickslider.h
 **********************/
 
-#ifndef MYSLIDER_H
-#define MYSLIDER_H
+#ifndef CLICKSLIDER_H
+#define CLICKSLIDER_H
 #include <QtWidgets/QSlider>
 
 class QSlider;
-class MySlider : public QSlider
+class ClickSlider : public QSlider
 {
 	Q_OBJECT
 	
 	public:
-	MySlider(QWidget * parent = 0 );
-	~MySlider(){;}
+	ClickSlider(QWidget * parent = 0 );
+	~ClickSlider(){;}
 
 	protected:
 	virtual void mousePressEvent ( QMouseEvent * event ) ;
