@@ -43,6 +43,7 @@
 
 #include <QMediaPlayer>
 #include <QWidget>
+#include "myslider.h"
 
 #define DEBUG_OPEN
 
@@ -89,7 +90,7 @@ private:
     QAbstractButton *nextButton;
     QAbstractButton *previousButton;
     QAbstractButton *muteButton;
-    QAbstractSlider *volumeSlider;
+    MySlider *volumeSlider;
 };
 
 #endif // PLAYERCONTROLS_H

@@ -54,7 +54,7 @@ csrplayer::csrplayer(QWidget *parent)
 
     ui->slider->setRange(0, player->duration() / 1000);
 
-    connect(ui->slider, SIGNAL(valueChanged(int)), this, SLOT(seek(int)));
+    connect(ui->slider, SIGNAL(sliderMoved(int)), this, SLOT(seek(int)));
 
     ui->openButton->setIcon(style()->standardIcon(QStyle::SP_ComputerIcon));
 	ui->openButton->setIconSize(QSize(60, 60));

@@ -100,8 +100,9 @@ PlayerControls::PlayerControls(QWidget *parent)
 
     connect(muteButton, SIGNAL(clicked()), this, SLOT(muteClicked()));
 
-    volumeSlider = new QSlider(Qt::Horizontal, this);
+    volumeSlider = new MySlider(this);
     volumeSlider->setRange(0, 100);
+	volumeSlider->setOrientation(Qt::Horizontal);
     QSizePolicy sizePolicy2(QSizePolicy::Preferred, QSizePolicy::Preferred);
     sizePolicy2.setHorizontalStretch(0);
     sizePolicy2.setVerticalStretch(0);
