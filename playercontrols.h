@@ -45,7 +45,7 @@
 #include <QWidget>
 #include "clickslider.h"
 
-#define DEBUG_OPEN
+//#define DEBUG_OPEN
 
 QT_BEGIN_NAMESPACE
 class QAbstractButton;
