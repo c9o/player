@@ -2,6 +2,7 @@
 #include "ui_csrplayer.h"
 #include "playercontrols.h"
 #include "playlistmodel.h"
+#include "filedialog.h"
 
 #include <QMediaService>
 #include <QMediaPlaylist>
@@ -123,18 +124,19 @@ void csrplayer::open()
     QStringList fileNames = QFileDialog::getOpenFileNames(this, tr("Open Files"));
     addToPlaylist(fileNames);
 #else
-	QFileDialog *fileDialog = new QFileDialog(this);
+	Dialog *fileDialog = new Dialog(this, "/media/mmcblk0p6/", QFileDialog::List);
 	fileDialog->setWindowTitle(tr("Open File"));
-	fileDialog->setDirectory("/media/mmcblk0p6/");
-	fileDialog->setStyleSheet ("font: 32pt \"Courier\";");
-	fileDialog->resize(1024, 600);
-	fileDialog->setViewMode(QFileDialog::List);
-	if(fileDialog->exec() == QDialog::Accepted) { 
+    fileDialog->setStyleSheet ("font: 12pt \"Courier\";");
+    fileDialog->resize(1024, 600);
+    /*if(fileDialog->exec() == QDialog::Accepted) {
                 QStringList fileNames = fileDialog->selectedFiles();
     addToPlaylist(fileNames);
-	}
+    }*/
+
+    fileDialog->exec();
+    qDebug()<< "show";
 #endif
-	player->setOverlay(ui->videoWidget->geometry().x(), ui->videoWidget->geometry().y(), ui->videoWidget->geometry().width(), ui->videoWidget->geometry().height());
+    player->setOverlay(ui->videoWidget->geometry().x(), ui->videoWidget->geometry().y(), ui->videoWidget->geometry().width(), ui->videoWidget->geometry().height());
 }
 
 void csrplayer::setOpenEnabled(QMediaPlayer::State state)
