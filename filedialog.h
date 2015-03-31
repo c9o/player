@@ -16,18 +16,37 @@ class Dialog : public QDialog
 {
     Q_OBJECT
 
-	public:
+public:
 		Dialog(QWidget *parent, const QString &filename, int mode);
         QFileDialog* GetFileDlg()
 		{
 			return m_filedlg;
         }
-        int receive(QString file);
+        QString GetFile()
+        {
+            return m_file;
+        }
 
-	private:
+private slots:
+        void currentFile(QString file)
+        {
+            qDebug() << "select file " << file;
+            textFileName->setText(file);
+            m_file = file;
+        }
+        void currentDirectory(QString dir)
+        {
+            qDebug() << "enter dir " << dir;
+            textDirName->setText(dir);
+        }
+
+private:
         QFileDialog *m_filedlg;
-        QLabel *textLabel;
-        QLineEdit *textEdit;
+        QString m_file;
+        QLabel *textDir;
+        QLabel *textDirName;
+        QLabel *textFile;
+        QLabel *textFileName;
 
         QGridLayout *mainLayout;
 };

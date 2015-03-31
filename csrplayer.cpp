@@ -127,14 +127,15 @@ void csrplayer::open()
 	Dialog *fileDialog = new Dialog(this, "/media/mmcblk0p6/", QFileDialog::List);
 	fileDialog->setWindowTitle(tr("Open File"));
     fileDialog->setStyleSheet ("font: 12pt \"Courier\";");
-    fileDialog->resize(1024, 600);
+    //fileDialog->resize(1024, 600);
     /*if(fileDialog->exec() == QDialog::Accepted) {
                 QStringList fileNames = fileDialog->selectedFiles();
     addToPlaylist(fileNames);
     }*/
 
     fileDialog->exec();
-    qDebug()<< "show";
+    qDebug()<< fileDialog->GetFile();
+    addToPlaylist(QStringList(fileDialog->GetFile()));
 #endif
     player->setOverlay(ui->videoWidget->geometry().x(), ui->videoWidget->geometry().y(), ui->videoWidget->geometry().width(), ui->videoWidget->geometry().height());
 }
