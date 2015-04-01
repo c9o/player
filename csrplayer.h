@@ -3,6 +3,7 @@
 
 #include "videowidget.h"
 #include "ui_csrplayer.h"
+#include <QListView>
 #include <QMainWindow>
 #include <QMediaPlayer>
 #include <QMediaPlaylist>
@@ -22,6 +23,7 @@ class csrplayer;
 }
 QT_END_NAMESPACE
 
+//#define ENABLE_PLAYLISTVIEW
 
 class csrplayer : public QMainWindow
 {
@@ -66,6 +68,9 @@ private:
     QLabel *coverLabel;
 
     PlaylistModel *playlistModel;
+#ifdef ENABLE_PLAYLISTVIEW
+    QListView *playlistView;
+#endif
     QString trackInfo;
     QString statusInfo;
     qint64 duration;

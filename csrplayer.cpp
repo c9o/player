@@ -47,11 +47,22 @@ csrplayer::csrplayer(QWidget *parent)
     playlistModel->setPlaylist(playlist);
 //! [2]
 
-    ui->playlistView->setModel(playlistModel);
-	ui->playlistView->setStyleSheet ("font: 24pt \"Courier\";");
-    ui->playlistView->setCurrentIndex(playlistModel->index(playlist->currentIndex(), 0));
+#ifdef ENABLE_PLAYLISTVIEW
+    playlistView = new QListView();
+    QSizePolicy sizePolicy1(QSizePolicy::Preferred, QSizePolicy::Preferred);
+    sizePolicy1.setHeightForWidth(playlistView->sizePolicy().hasHeightForWidth());
+    playlistView->setObjectName(QStringLiteral("playlistView"));
+    playlistView->setSizePolicy(sizePolicy1);
+    playlistView->setMinimumSize(QSize(0, 0));
+    playlistView->setMaximumSize(QSize(16777215, 16777215));
+    playlistView->setStyleSheet(QStringLiteral(""));
+    playlistView->setModel(playlistModel);
+    playlistView->setStyleSheet ("font: 24pt \"Courier\";");
+    playlistView->setCurrentIndex(playlistModel->index(playlist->currentIndex(), 0));
+    ui->displayLayout->addWidget(playlistView);
 
-    connect(ui->playlistView, SIGNAL(activated(QModelIndex)), this, SLOT(jump(QModelIndex)));
+    connect(playlistView, SIGNAL(activated(QModelIndex)), this, SLOT(jump(QModelIndex)));
+#endif
 
     ui->slider->setRange(0, player->duration() / 1000);
 
@@ -91,7 +102,9 @@ csrplayer::csrplayer(QWidget *parent)
                                 "Please check the media service plugins are installed."));
 
         ui->controls->setEnabled(false);
-        ui->playlistView->setEnabled(false);
+#ifdef ENABLE_PLAYLISTVIEW
+        playlistView->setEnabled(false);
+#endif
     }
 
     metaDataChanged();
@@ -235,7 +248,9 @@ void csrplayer::jump(const QModelIndex &index)
 
 void csrplayer::playlistPositionChanged(int currentItem)
 {
-    ui->playlistView->setCurrentIndex(playlistModel->index(currentItem, 0));
+#ifdef ENABLE_PLAYLISTVIEW
+    playlistView->setCurrentIndex(playlistModel->index(currentItem, 0));
+#endif
 }
 
 void csrplayer::seek(int seconds)
