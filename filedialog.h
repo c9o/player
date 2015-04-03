@@ -43,6 +43,8 @@ private slots:
             m_file = file;
         }
 
+        void dialogQuit();
+
 private:
         QFileDialog         *m_filedlg;
         QFileInfo           *m_fileinfo;

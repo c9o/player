@@ -38,7 +38,13 @@ Dialog::Dialog(QWidget *parent, const QString &filename, int mode)
 
     m_fileinfo = new QFileInfo();
 
-    QObject::connect(m_filedlg, SIGNAL(finished(int)), this, SLOT(done(int)));
+    QObject::connect(m_filedlg, SIGNAL(finished(int)), this, SLOT(dialogQuit()));
     QObject::connect(m_filedlg, SIGNAL(currentChanged(QString)), this, SLOT(currentFile(QString)));
     QObject::connect(m_filedlg, SIGNAL(fileSelected(QString)), this, SLOT(selectFile(QString)));
+}
+
+void Dialog::dialogQuit()
+{
+    delete m_mediainfo;
+    hide();
 }
