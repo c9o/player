@@ -27,22 +27,28 @@ public:
 
         QString GetFile()
         {
-            return m_file->absoluteFilePath();
+            return m_file;
         }
 
 private slots:
         void currentFile(QString file)
         {
-            m_file->setFile(file);
-            m_mediainfo->setItem(0, 1, new QTableWidgetItem(m_file->absolutePath()));
-            m_mediainfo->setItem(1, 1, new QTableWidgetItem(m_file->fileName()));
+            m_fileinfo->setFile(file);
+            m_mediainfo->setItem(0, 1, new QTableWidgetItem(m_fileinfo->absolutePath()));
+            m_mediainfo->setItem(1, 1, new QTableWidgetItem(m_fileinfo->fileName()));
+        }
+
+        void selectFile(QString file)
+        {
+            m_file = file;
         }
 
 private:
         QFileDialog         *m_filedlg;
-        QFileInfo           *m_file;
+        QFileInfo           *m_fileinfo;
         QTableWidget        *m_mediainfo;
         QTableWidgetItem    *m_item;
         QGridLayout         *m_mainLaout;
+        QString              m_file;
 };
 #endif

@@ -50,8 +50,8 @@
 #include <QDebug>
 #endif
 
-#define SIZE_DEFAULT 60
-#define ICON_SIZE_DEFAULT 60
+#define SIZE_DEFAULT 40
+#define ICON_SIZE_DEFAULT 40
 
 PlayerControls::PlayerControls(QWidget *parent)
     : QWidget(parent)

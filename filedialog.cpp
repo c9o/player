@@ -30,14 +30,15 @@ Dialog::Dialog(QWidget *parent, const QString &filename, int mode)
     m_mediainfo->setItem(0, 0, new QTableWidgetItem("Path"));
     m_mediainfo->setItem(1, 0, new QTableWidgetItem("Name"));
 
-    m_mainLaout->addWidget(m_filedlg,    0 , 0 , 2 , 1 );
-    m_mainLaout->addWidget(m_mediainfo,    1 , 1 , 1 , 1 );
+    m_mainLaout->addWidget(m_mediainfo,    0 , 0 , 2 , 1 );
+    m_mainLaout->addWidget(m_filedlg,    1 , 1 , 1 , 1 );
 
     setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding));
     m_filedlg->setGeometry(QRect(0,0,200,100));
 
-    m_file = new QFileInfo();
+    m_fileinfo = new QFileInfo();
 
     QObject::connect(m_filedlg, SIGNAL(finished(int)), this, SLOT(done(int)));
     QObject::connect(m_filedlg, SIGNAL(currentChanged(QString)), this, SLOT(currentFile(QString)));
+    QObject::connect(m_filedlg, SIGNAL(fileSelected(QString)), this, SLOT(selectFile(QString)));
 }

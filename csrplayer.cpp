@@ -69,12 +69,12 @@ csrplayer::csrplayer(QWidget *parent)
     connect(ui->slider, SIGNAL(sliderMoved(int)), this, SLOT(seek(int)));
 
     ui->openButton->setIcon(style()->standardIcon(QStyle::SP_ComputerIcon));
-	ui->openButton->setIconSize(QSize(60, 60));
+    ui->openButton->setIconSize(QSize(40, 40));
 	ui->openButton->setEnabled(true);
     connect(player, SIGNAL(stateChanged(QMediaPlayer::State)),
             this, SLOT(setOpenEnabled(QMediaPlayer::State)));
     ui->closeButton->setIcon(style()->standardIcon(QStyle::SP_DialogCloseButton));
-	ui->closeButton->setIconSize(QSize(60, 60));
+    ui->closeButton->setIconSize(QSize(40, 40));
     connect(ui->openButton, SIGNAL(clicked()), this, SLOT(open()));
 
     ui->controls->setState(player->state());
@@ -139,12 +139,19 @@ void csrplayer::open()
 #else
 	Dialog *fileDialog = new Dialog(this, "/media/mmcblk0p6/", QFileDialog::List);
 	fileDialog->setWindowTitle(tr("Open File"));
-    fileDialog->setStyleSheet ("font: 12pt \"Courier\";");
+    fileDialog->setStyleSheet ("font: 20pt \"Courier\";");
     fileDialog->resize(1024, 600);
-    if(fileDialog->exec() == QDialog::Accepted) {
-                QString fileNames = fileDialog->GetFile();
-    addToPlaylist(QStringList(fileNames));
-    }
+    /*if(fileDialog->exec() == QDialog::Accepted) {
+        QString fileNames = fileDialog->GetFile();
+        qDebug()<<fileNames;
+        addToPlaylist(QStringList(fileNames));
+    }*/
+    fileDialog->exec();
+#ifdef DEBUG_OPEN
+    qDebug()<<fileDialog->GetFile();
+#endif
+    addToPlaylist(QStringList(fileDialog->GetFile()));
+
 #endif
     player->setOverlay(ui->videoWidget->geometry().x(), ui->videoWidget->geometry().y(), ui->videoWidget->geometry().width(), ui->videoWidget->geometry().height());
 }
