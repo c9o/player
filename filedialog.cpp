@@ -14,6 +14,11 @@ Dialog::Dialog(QWidget *parent, const QString &filename, int mode)
             << "Any files (*)";
     m_filedlg->setNameFilters(filters);
 
+    QList<QUrl> urls;
+    urls << QUrl::fromLocalFile("/media/mmcblk0p6")
+         << QUrl::fromLocalFile("/media/mmcblk1p1");
+    m_filedlg->setSidebarUrls(urls);
+
     m_mediainfo = new QTableWidget(parent);
     m_mainLaout = new QGridLayout(this);
 

@@ -137,7 +137,7 @@ void csrplayer::open()
     QStringList fileNames = QFileDialog::getOpenFileNames(this, tr("Open Files"));
     addToPlaylist(fileNames);
 #else
-	Dialog *fileDialog = new Dialog(this, "/media/mmcblk0p6/", QFileDialog::List);
+    Dialog *fileDialog = new Dialog(this, "/media/mmcblk1p1/", QFileDialog::List);
 	fileDialog->setWindowTitle(tr("Open File"));
     fileDialog->setStyleSheet ("font: 20pt \"Courier\";");
     fileDialog->resize(1024, 600);
