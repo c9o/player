@@ -238,16 +238,16 @@ void csrplayer::addToPlaylist(const QStringList& fileNames)
 
 void csrplayer::durationChanged(qint64 duration)
 {
-    this->duration = duration/1000;
-    ui->slider->setMaximum(duration / 1000);
+    this->duration = int(duration/1000.0 + 0.5);
+    ui->slider->setMaximum(int(duration/1000.0 + 0.5));
 }
 
 void csrplayer::positionChanged(qint64 progress)
 {
     if (!ui->slider->isSliderDown()) {
-        ui->slider->setValue(progress / 1000);
+        ui->slider->setValue(progress/1000);
     }
-    updateDurationInfo(progress / 1000);
+    updateDurationInfo(progress/1000);
 }
 
 void csrplayer::metaDataChanged()
