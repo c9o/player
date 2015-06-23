@@ -19,10 +19,11 @@ Dialog::Dialog(QWidget *parent, const QString &filename, int mode)
          << QUrl::fromLocalFile("/media/mmcblk1p1");
     m_filedlg->setSidebarUrls(urls);
 
-    m_mediainfo = new QTableWidget(parent);
+    //m_mediainfo = new QTableWidget(parent);
     m_mainLaout = new QGridLayout(this);
+    m_mediainfo = new QTextEdit(parent);
 
-    m_mediainfo->setColumnCount(2);
+    /*m_mediainfo->setColumnCount(2);
     m_mediainfo->setRowCount(2);
     m_mediainfo->horizontalHeader()->setVisible(false);
     m_mediainfo->verticalHeader()->setVisible(false);
@@ -33,10 +34,10 @@ Dialog::Dialog(QWidget *parent, const QString &filename, int mode)
     m_mediainfo->horizontalHeader()->setStretchLastSection(true);
     //m_mediainfo->horizontalHeader()->resizeSection(0,100);
     m_mediainfo->setItem(0, 0, new QTableWidgetItem("Path"));
-    m_mediainfo->setItem(1, 0, new QTableWidgetItem("Name"));
+    m_mediainfo->setItem(1, 0, new QTableWidgetItem("Name"));*/
 
     m_mainLaout->addWidget(m_mediainfo,  0 , 0 , 2 , 1 );
-    m_mainLaout->addWidget(m_filedlg,    1 , 1 , 1 , 1 );
+    m_mainLaout->addWidget(m_filedlg,    0 , 1 , 2 , 1 );
 
     setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding));
 

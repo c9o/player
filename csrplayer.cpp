@@ -9,6 +9,7 @@
 #include <QVideoProbe>
 #include <QMediaMetaData>
 #include <QtWidgets>
+#include <QMediaContent>
 
 #ifdef DEBUG_OPEN
 #include <QDebug>
@@ -258,6 +259,12 @@ void csrplayer::playlistPositionChanged(int currentItem)
 #ifdef ENABLE_PLAYLISTVIEW
     playlistView->setCurrentIndex(playlistModel->index(currentItem, 0));
 #endif
+    QUrl fileUrl = playlistModel->playlist()->currentMedia().canonicalUrl();
+#ifdef DEBUG_OPEN
+    qDebug() << fileUrl.fileName();
+#endif
+    ui->label->setWordWrap(true);
+    ui->label->setText(fileUrl.fileName());
 }
 
 void csrplayer::seek(int seconds)

@@ -10,6 +10,7 @@
 #include <QHBoxLayout>
 #include <QHeaderView>
 #include <QTableWidget>
+#include <QTextEdit>
 #include <QVBoxLayout>
 #include <QWidget>
 
@@ -34,8 +35,8 @@ private slots:
         void currentFile(QString file)
         {
             m_fileinfo->setFile(file);
-            m_mediainfo->setItem(0, 1, new QTableWidgetItem(m_fileinfo->absolutePath()));
-            m_mediainfo->setItem(1, 1, new QTableWidgetItem(m_fileinfo->fileName()));
+            //m_mediainfo->setItem(0, 1, new QTableWidgetItem(m_fileinfo->absolutePath()));
+            //m_mediainfo->setItem(1, 1, new QTableWidgetItem(m_fileinfo->fileName()));
         }
 
         void selectFile(QString file)
@@ -48,7 +49,7 @@ private slots:
 private:
         QFileDialog         *m_filedlg;
         QFileInfo           *m_fileinfo;
-        QTableWidget        *m_mediainfo;
+        QTextEdit           *m_mediainfo;
         QTableWidgetItem    *m_item;
         QGridLayout         *m_mainLaout;
         QString              m_file;
