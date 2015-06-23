@@ -263,8 +263,7 @@ void csrplayer::playlistPositionChanged(int currentItem)
 #ifdef DEBUG_OPEN
     qDebug() << fileUrl.fileName();
 #endif
-    ui->label->setWordWrap(true);
-    ui->label->setText(fileUrl.fileName());
+    ui->widget->setText(fileUrl.fileName());
 }
 
 void csrplayer::seek(int seconds)

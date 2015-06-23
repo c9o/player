@@ -14,6 +14,7 @@ HEADERS = \
     filedialog.h \
     playercontrols.h \
     playlistmodel.h \
+    ticker.h \
     videowidget.h
 SOURCES = main.cpp \
     csrplayer.cpp \
@@ -21,6 +22,7 @@ SOURCES = main.cpp \
     filedialog.cpp \
     playercontrols.cpp \
     playlistmodel.cpp \
+    ticker.cpp \
     videowidget.cpp
 
 FORMS    += csrplayer.ui
