@@ -154,7 +154,31 @@ void csrplayer::open()
     addToPlaylist(QStringList(fileDialog->GetFile()));
 
 #endif
+
+#ifdef USE_V4L2sink
+#ifdef ENABLE_PLAYLISTVIEW
     player->setOverlay(ui->videoWidget->geometry().x(), ui->videoWidget->geometry().y(), ui->videoWidget->geometry().width(), ui->videoWidget->geometry().height());
+#else
+    int x, y, w, h;
+    qDebug() << DEFAULE_W << DEFAULT_H;
+    if (ui->videoWidget->geometry().width() * DEFAULT_H > ui->videoWidget->geometry().height() * DEFAULE_W)
+    {
+        x = ui->videoWidget->geometry().x() + ui->videoWidget->geometry().width() / 2 - ui->videoWidget->geometry().height() * DEFAULE_W / 2 / DEFAULT_H;
+        y = ui->videoWidget->geometry().y();
+        w = ui->videoWidget->geometry().height() * DEFAULE_W / DEFAULT_H;
+        h = ui->videoWidget->geometry().height();
+    }
+    else
+    {
+        x = ui->videoWidget->geometry().x();
+        y = ui->videoWidget->geometry().y() + ui->videoWidget->geometry().height() / 2 - ui->videoWidget->geometry().width() * DEFAULT_H / 2 / DEFAULE_W;
+        w = ui->videoWidget->geometry().width();
+        h = ui->videoWidget->geometry().width() * DEFAULT_H / DEFAULE_W;
+    }
+    qDebug() << x << y << w << h;
+    player->setOverlay(x, y, w, h);
+#endif
+#endif
 }
 
 void csrplayer::setOpenEnabled(QMediaPlayer::State state)
