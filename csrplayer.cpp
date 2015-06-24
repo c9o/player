@@ -9,6 +9,7 @@
 #include <QVideoProbe>
 #include <QMediaMetaData>
 #include <QtWidgets>
+#include <QMediaContent>
 
 #ifdef DEBUG_OPEN
 #include <QDebug>
@@ -137,7 +138,7 @@ void csrplayer::open()
     QStringList fileNames = QFileDialog::getOpenFileNames(this, tr("Open Files"));
     addToPlaylist(fileNames);
 #else
-	Dialog *fileDialog = new Dialog(this, "/media/mmcblk0p6/", QFileDialog::List);
+    Dialog *fileDialog = new Dialog(this, "/media/mmcblk1p1/", QFileDialog::List);
 	fileDialog->setWindowTitle(tr("Open File"));
     fileDialog->setStyleSheet ("font: 20pt \"Courier\";");
     fileDialog->resize(1024, 600);
@@ -153,7 +154,34 @@ void csrplayer::open()
     addToPlaylist(QStringList(fileDialog->GetFile()));
 
 #endif
-    player->setOverlay(ui->videoWidget->geometry().x(), ui->videoWidget->geometry().y(), ui->videoWidget->geometry().width(), ui->videoWidget->geometry().height());
+
+#ifdef USE_V4L2sink
+#ifdef ENABLE_PLAYLISTVIEW
+    player->setOverlay(ui->videoWidget->geometry().y(), ui->videoWidget->geometry().x(), ui->videoWidget->geometry().width(), ui->videoWidget->geometry().height());
+#else
+    int x, y, w, h;
+
+    if (ui->videoWidget->geometry().width() * DEFAULT_H > ui->videoWidget->geometry().height() * DEFAULE_W)
+    {
+        x = ui->videoWidget->geometry().x() + ui->videoWidget->geometry().width() / 2 - ui->videoWidget->geometry().height() * DEFAULE_W / 2 / DEFAULT_H;
+        y = ui->videoWidget->geometry().y();
+        w = ui->videoWidget->geometry().height() * DEFAULE_W / DEFAULT_H;
+        h = ui->videoWidget->geometry().height();
+    }
+    else
+    {
+        x = ui->videoWidget->geometry().x();
+        y = ui->videoWidget->geometry().y() + ui->videoWidget->geometry().height() / 2 - ui->videoWidget->geometry().width() * DEFAULT_H / 2 / DEFAULE_W;
+        w = ui->videoWidget->geometry().width();
+        h = ui->videoWidget->geometry().width() * DEFAULT_H / DEFAULE_W;
+    }
+#ifdef DEBUG_OPEN
+    qDebug() << DEFAULE_W << DEFAULT_H;
+    qDebug() << x << y << w << h;
+#endif
+    player->setOverlay(y, x, w, h);
+#endif
+#endif
 }
 
 void csrplayer::setOpenEnabled(QMediaPlayer::State state)
@@ -258,6 +286,17 @@ void csrplayer::playlistPositionChanged(int currentItem)
 #ifdef ENABLE_PLAYLISTVIEW
     playlistView->setCurrentIndex(playlistModel->index(currentItem, 0));
 #endif
+    QUrl fileUrl = playlistModel->playlist()->currentMedia().canonicalUrl();
+#ifdef DEBUG_OPEN
+    qDebug() << fileUrl.fileName();
+    qDebug() << fileUrl.fileName().length();
+#endif
+    QString dispName = fileUrl.fileName();
+    if (dispName.length() <= 32) dispName += QString(2*(36-dispName.length()), ' ');
+    else
+        dispName += "    ";
+
+    ui->label->setText(dispName);
 }
 
 void csrplayer::seek(int seconds)
