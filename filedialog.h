@@ -32,18 +32,8 @@ public:
         }
 
 private slots:
-        void currentFile(QString file)
-        {
-            m_fileinfo->setFile(file);
-            //m_mediainfo->setItem(0, 1, new QTableWidgetItem(m_fileinfo->absolutePath()));
-            //m_mediainfo->setItem(1, 1, new QTableWidgetItem(m_fileinfo->fileName()));
-        }
-
-        void selectFile(QString file)
-        {
-            m_file = file;
-        }
-
+        void currentFile(QString file);
+        void selectFile(QString file);
         void dialogQuit();
 
 private:
