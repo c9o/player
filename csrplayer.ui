@@ -191,13 +191,13 @@ QScrollBar::down-arrow:vertical {
          <widget class="Ticker" name="widget" native="true">
           <property name="minimumSize">
            <size>
-            <width>500</width>
+            <width>450</width>
             <height>0</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>500</width>
+            <width>450</width>
             <height>16777215</height>
            </size>
           </property>

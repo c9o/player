@@ -1,7 +1,7 @@
 #ifndef TICKER_H
 #define TICKER_H
-#include <QWidget>
-class Ticker : public QWidget
+#include <QLabel>
+class Ticker : public QLabel
 {
     Q_OBJECT
     Q_PROPERTY(QString text READ text WRITE setText)

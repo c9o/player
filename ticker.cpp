@@ -2,7 +2,7 @@
 #include "ticker.h"
 
 Ticker::Ticker(QWidget *parent)
-    : QWidget(parent)
+    : QLabel(parent)
 {
     offset = 0;
     myTimerId = 0;
