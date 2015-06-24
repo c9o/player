@@ -157,10 +157,10 @@ void csrplayer::open()
 
 #ifdef USE_V4L2sink
 #ifdef ENABLE_PLAYLISTVIEW
-    player->setOverlay(ui->videoWidget->geometry().x(), ui->videoWidget->geometry().y(), ui->videoWidget->geometry().width(), ui->videoWidget->geometry().height());
+    player->setOverlay(ui->videoWidget->geometry().y(), ui->videoWidget->geometry().x(), ui->videoWidget->geometry().width(), ui->videoWidget->geometry().height());
 #else
     int x, y, w, h;
-    qDebug() << DEFAULE_W << DEFAULT_H;
+
     if (ui->videoWidget->geometry().width() * DEFAULT_H > ui->videoWidget->geometry().height() * DEFAULE_W)
     {
         x = ui->videoWidget->geometry().x() + ui->videoWidget->geometry().width() / 2 - ui->videoWidget->geometry().height() * DEFAULE_W / 2 / DEFAULT_H;
@@ -175,8 +175,11 @@ void csrplayer::open()
         w = ui->videoWidget->geometry().width();
         h = ui->videoWidget->geometry().width() * DEFAULT_H / DEFAULE_W;
     }
+#ifdef DEBUG_OPEN
+    qDebug() << DEFAULE_W << DEFAULT_H;
     qDebug() << x << y << w << h;
-    player->setOverlay(x, y, w, h);
+#endif
+    player->setOverlay(y, x, w, h);
 #endif
 #endif
 }
