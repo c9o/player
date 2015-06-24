@@ -10,7 +10,7 @@ Ticker::Ticker(QWidget *parent)
 
 void Ticker::setText(const QString &newText)
 {
-    myText = newText + "    ";
+    myText = newText;
     update();
     updateGeometry();
 }

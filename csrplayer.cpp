@@ -286,8 +286,14 @@ void csrplayer::playlistPositionChanged(int currentItem)
     QUrl fileUrl = playlistModel->playlist()->currentMedia().canonicalUrl();
 #ifdef DEBUG_OPEN
     qDebug() << fileUrl.fileName();
+    qDebug() << fileUrl.fileName().length();
 #endif
-    ui->widget->setText(fileUrl.fileName());
+    QString dispName = fileUrl.fileName();
+    if (dispName.length() <= 32) dispName += QString(2*(36-dispName.length()), ' ');
+    else
+        dispName += "    ";
+
+    ui->label->setText(dispName);
 }
 
 void csrplayer::seek(int seconds)
