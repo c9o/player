@@ -13,6 +13,10 @@
 #include <QTextEdit>
 #include <QVBoxLayout>
 #include <QWidget>
+#include <dlfcn.h>
+
+#define MEDIA_LIB "libmediainfo.so"
+typedef int (*M_FUNC)(char *, char *);
 
 class Dialog : public QDialog
 {
@@ -23,6 +27,7 @@ public:
 
         QFileDialog* GetFileDlg()
 		{
+            if (handle) dlclose(handle);
 			return m_filedlg;
         }
 
@@ -43,5 +48,10 @@ private:
         QTableWidgetItem    *m_item;
         QGridLayout         *m_mainLaout;
         QString              m_file;
+
+        void *handle;
+        M_FUNC mediainfo;
+        char msg[4096];
+        int offset;
 };
 #endif

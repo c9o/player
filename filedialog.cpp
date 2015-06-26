@@ -34,6 +34,19 @@ Dialog::Dialog(QWidget *parent, const QString &filename, int mode)
     QObject::connect(m_filedlg, SIGNAL(finished(int)), this, SLOT(dialogQuit()));
     QObject::connect(m_filedlg, SIGNAL(currentChanged(QString)), this, SLOT(currentFile(QString)));
     QObject::connect(m_filedlg, SIGNAL(fileSelected(QString)), this, SLOT(selectFile(QString)));
+
+    handle = dlopen (MEDIA_LIB, RTLD_LAZY);
+    if(!handle)
+    {
+        qDebug() << MEDIA_LIB << " open failed!";
+    }
+
+    *(void **) (&mediainfo) = dlsym(handle, "media_info");
+
+    if(!mediainfo)
+    {
+        qDebug() << "Get mediainfo" << " open failed!";
+    }
 }
 
 void Dialog::currentFile(QString file)
@@ -41,9 +54,10 @@ void Dialog::currentFile(QString file)
     m_fileinfo->setFile(file);
     if (m_fileinfo->isFile())
     {
-        QString info;
-        info = "FilePath: \n" + m_fileinfo->absoluteFilePath() + "\n" + "FileName: \n" + m_fileinfo->fileName();
         m_mediainfo->setFontPointSize(12);
+        QByteArray filename = m_fileinfo->absoluteFilePath().toLatin1();
+        if(mediainfo)offset = (* mediainfo)(filename.data(), msg);
+        QString info = QString::fromStdString(msg);
         m_mediainfo->setText(info);
     }
 }

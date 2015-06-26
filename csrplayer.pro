@@ -29,6 +29,8 @@ FORMS    += csrplayer.ui
 
 OTHER_FILES +=
 
+LIBS += -lmediainfo -ldl
+
 RESOURCES += csrplayer.qrc
 
 target.path = $$[QT_INSTALL_EXAMPLES]/multimediawidgets/player
