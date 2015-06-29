@@ -16,7 +16,7 @@
 #include <dlfcn.h>
 
 #define MEDIA_LIB "libmediainfo.so"
-typedef int (*M_FUNC)(char *, char *);
+typedef void (*M_FUNC)(char *, char *);
 
 class Dialog : public QDialog
 {
@@ -52,6 +52,5 @@ private:
         void *handle;
         M_FUNC mediainfo;
         char msg[4096];
-        int offset;
 };
 #endif
