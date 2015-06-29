@@ -58,6 +58,7 @@ void Dialog::currentFile(QString file)
         QByteArray filename = m_fileinfo->absoluteFilePath().toLatin1();
         if(mediainfo)(* mediainfo)(filename.data(), msg);
         m_mediainfo->setText(QString::fromStdString(msg));
+        msg[0]={'\0'};
     }
 }
 
