@@ -29,7 +29,7 @@ FORMS    += csrplayer.ui
 
 OTHER_FILES +=
 
-LIBS += -lmediainfo -ldl
+LIBS += -ldl
 
 RESOURCES += csrplayer.qrc
 
