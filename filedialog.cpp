@@ -56,8 +56,7 @@ void Dialog::currentFile(QString file)
     {
         m_mediainfo->setFontPointSize(12);
         QByteArray filename = m_fileinfo->absoluteFilePath().toLatin1();
-        if(mediainfo)offset = (* mediainfo)(filename.data(), msg);
-        msg[offset] = '\0';
+        if(mediainfo)(* mediainfo)(filename.data(), msg);
         m_mediainfo->setText(QString::fromStdString(msg));
         msg[0]={'\0'};
     }
