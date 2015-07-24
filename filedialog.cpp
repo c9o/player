@@ -9,7 +9,8 @@ Dialog::Dialog(QWidget *parent, const QString &filename, int mode)
     m_filedlg->resize(800, 480);
 
     QStringList filters;
-    filters << "Video files (*.3gp *.avi *.flv *.h264 *.m4v *.mkv *.mov *.mpeg *.mpeg2 *.mpeg4 *.mp4 *.mpg *.ts *.wmv)"
+    filters << "Supported files (*.3gp *.avi *.flv *.h264 *.m4v *.mkv *.mov *.mpeg *.mpeg2 *.mpeg4 *.mp4 *.mpg *.ts *.wmv *.mp3 *.ogg)"
+    		<< "Video files (*.3gp *.avi *.flv *.h264 *.m4v *.mkv *.mov *.mpeg *.mpeg2 *.mpeg4 *.mp4 *.mpg *.ts *.wmv)"
             << "Audio files (*.mp3 *.ogg)"
             << "Any files (*)";
     m_filedlg->setNameFilters(filters);
@@ -58,7 +59,6 @@ void Dialog::currentFile(QString file)
         QByteArray filename = m_fileinfo->absoluteFilePath().toLatin1();
         if(mediainfo)(* mediainfo)(filename.data(), msg);
         m_mediainfo->setText(QString::fromStdString(msg));
-        msg[0]={'\0'};
     }
 }
 
