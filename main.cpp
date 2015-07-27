@@ -48,6 +48,6 @@ int main(int argc, char *argv[])
 
     csrplayer player;
     //player.resize(800,480);
-    player.show();
+    player.showFullScreen();
     return app.exec();
 }
