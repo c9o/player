@@ -135,18 +135,25 @@ void csrplayer::open()
 #endif
 
 #if 0
-    QStringList fileNames = QFileDialog::getOpenFileNames(this, tr("Open Files"));
+    //QStringList fileNames = QFileDialog::getOpenFileNames(this, tr("Open Files"));
+    //addToPlaylist(fileNames);
+	QFileDialog *fileDialog = new QFileDialog(this);
+	fileDialog->setWindowTitle(tr("Open File"));
+	fileDialog->setDirectory("/media/mmcblk0p6/");
+	fileDialog->setStyleSheet ("font: 32pt \"Courier\";");
+	fileDialog->setWindowFlags(Qt::Window);
+	fileDialog->showFullScreen();
+	fileDialog->setViewMode(QFileDialog::List);
+	if(fileDialog->exec() == QDialog::Accepted) {
+                QStringList fileNames = fileDialog->selectedFiles();
     addToPlaylist(fileNames);
+	}
 #else
     Dialog *fileDialog = new Dialog(this, "/media/mmcblk1p1/", QFileDialog::List);
 	fileDialog->setWindowTitle(tr("Open File"));
     fileDialog->setStyleSheet ("font: 20pt \"Courier\";");
-    fileDialog->resize(1024, 600);
-    /*if(fileDialog->exec() == QDialog::Accepted) {
-        QString fileNames = fileDialog->GetFile();
-        qDebug()<<fileNames;
-        addToPlaylist(QStringList(fileNames));
-    }*/
+    //fileDialog->resize(1024, 600);
+    fileDialog->showMaximized();
     fileDialog->exec();
 #ifdef DEBUG_OPEN
     qDebug()<<fileDialog->GetFile();
