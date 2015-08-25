@@ -15,7 +15,7 @@
 #include <QWidget>
 #include <dlfcn.h>
 
-#define MEDIA_LIB "libmediainfo.so"
+#define MEDIA_LIB "libmediainfo.so.0"
 typedef void (*M_FUNC)(char *, char *);
 
 class Dialog : public QDialog

@@ -40,7 +40,7 @@ signals:
 
 private slots:
     void open();
-	void on_closeButton_clicked();
+    void on_closeButton_clicked();
     void durationChanged(qint64 duration);
     void positionChanged(qint64 progress);
     void metaDataChanged();
