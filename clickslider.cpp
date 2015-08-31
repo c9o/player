@@ -22,24 +22,6 @@ ClickSlider::ClickSlider( QWidget * parent) :QSlider(parent)
 
 }
 
-/*
-   void ClickSlider::mousePressEvent ( QMouseEvent * mouseEvent )
-   {
-   if(mouseEvent->button()==Qt::LeftButton && isEnabled())
-   {
-   int duration = maximum() - minimum();
-   int pos = minimum() + duration * ((double)mouseEvent->x() / width());
-   qDebug() << Q_FUNC_INFO << " pos" << pos;
-   if(pos != sliderPosition())
-   {
-   setValue(pos);     
-   }
-// else ok.
-emit(sliderMoved(pos));
-}
-}
- */
-
 void ClickSlider::mousePressEvent ( QMouseEvent * event )
 {
 	QStyleOptionSlider opt;
@@ -58,7 +40,7 @@ void ClickSlider::mousePressEvent ( QMouseEvent * event )
 
 		if (invertedAppearance() == true)
 		{
-			setValue( maximum() - newVal );
+            setValue(maximum() - newVal);
 			pos = maximum() - newVal;
 		}
 		else
