@@ -26,8 +26,10 @@ void ClickSlider::mousePressEvent ( QMouseEvent * event )
 {
 	QStyleOptionSlider opt;
 	initStyleOption(&opt);
-	int pos;
+    int pos = 0;
 	QRect sr = style()->subControlRect(QStyle::CC_Slider, &opt, QStyle::SC_SliderHandle, this);
+
+    pos = value();
 
 	if (event->button() == Qt::LeftButton &&
 			sr.contains(event->pos()) == false)
