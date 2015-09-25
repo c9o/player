@@ -23,7 +23,7 @@ Dialog::Dialog(QWidget *parent, const QString &filename, int mode)
     m_filedlg->resize(800, 480);
 
     QStringList filters;
-    filters << "Supported files (*.3gp *.ape *.avi *.flac *.flv *.h264 *.m4v *.mkv *.mov *.mpeg *.mpeg2 *.mpeg4 *.mp2 *.mp4 *.mpg *.ts *.wav *.wmv *.mp3 *.ogg)"
+    filters << "Supported files (*.3gp *.ape *.asf *.avi *.flac *.flv *.h264 *.m4a *.m4v *.mkv *.mov *.mpeg *.mpeg2 *.mpeg4 *.mp2 *.mp4 *.mpg *.ts *.vob *.wav *.wmv *.mp3 *.ogg)"
             //<< "Video files (*.3gp *.ape *.avi *.flac *.flv *.h264 *.m4v *.mkv *.mov *.mpeg *.mpeg2 *.mpeg4 *.mp2 *.mp4 *.mpg *.ts *.wmv)"
             //<< "Audio files (*.mp3 *.ogg *.wav)"
             << "Any files (*)";
