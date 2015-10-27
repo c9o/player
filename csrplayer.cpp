@@ -290,20 +290,23 @@ void csrplayer::jump(const QModelIndex &index)
 
 void csrplayer::playlistPositionChanged(int currentItem)
 {
+    QUrl fileUrl = playlistModel->playlist()->currentMedia().canonicalUrl();
 #ifdef ENABLE_PLAYLISTVIEW
     playlistView->setCurrentIndex(playlistModel->index(currentItem, 0));
-#endif
-    QUrl fileUrl = playlistModel->playlist()->currentMedia().canonicalUrl();
-#ifdef DEBUG_OPEN
-    qDebug() << fileUrl.fileName();
-    qDebug() << fileUrl.fileName().length();
-#endif
+    ui->label->setText(fileUrl.fileName());
+#else
     QString dispName = fileUrl.fileName();
     if (dispName.length() <= 32) dispName += QString(2*(36-dispName.length()), ' ');
     else
         dispName += "    ";
 
     ui->label->setText(dispName);
+#endif
+
+#ifdef DEBUG_OPEN
+    qDebug() << fileUrl.fileName();
+    qDebug() << fileUrl.fileName().length();
+#endif
 }
 
 void csrplayer::seek(int seconds)

@@ -188,7 +188,7 @@ QScrollBar::down-arrow:vertical {
       <item>
        <layout class="QHBoxLayout" name="controlLayout">
         <item>
-         <widget class="Ticker" name="label">
+         <widget class="QLabel" name="label">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -311,11 +311,6 @@ QScrollBar::down-arrow:vertical {
    <class>ClickSlider</class>
    <extends>QSlider</extends>
    <header location="global">clickslider.h</header>
-  </customwidget>
-  <customwidget>
-   <class>Ticker</class>
-   <extends>QLabel</extends>
-   <header location="global">ticker.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
