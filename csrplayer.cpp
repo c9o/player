@@ -124,7 +124,7 @@ csrplayer::~csrplayer()
 	delete player;
 	delete playlist;
 	delete coverLabel;
-	delete playlistModel;
+    delete playlistModel;
 }
 
 void csrplayer::open()
@@ -134,16 +134,56 @@ void csrplayer::open()
 	qDebug() << ui->videoWidget->geometry();
 #endif
 
-#if 0
+#if 1
     //QStringList fileNames = QFileDialog::getOpenFileNames(this, tr("Open Files"));
     //addToPlaylist(fileNames);
 	QFileDialog *fileDialog = new QFileDialog(this);
+    fileDialog->setOption(QFileDialog::DontUseNativeDialog,true);
+
+    QLabel *fileTypeLabel = fileDialog->findChild<QLabel*>("fileTypeLabel");
+    //qDebug() << "Label" << fileTypeLabel->text();
+    fileTypeLabel->hide();
+
+    QLabel *fileNameLabel = fileDialog->findChild<QLabel*>("fileNameLabel");
+    //qDebug() << "Label" << fileNameLabel->text();
+    fileNameLabel->hide();
+
+    QLabel *lookInLabel = fileDialog->findChild<QLabel*>("lookInLabel");
+    //qDebug() << "Label" << lookInLabel->text();
+    lookInLabel->hide();
+
+    QToolButton *backButton = fileDialog->findChild<QToolButton*>("backButton");
+    backButton->hide();
+
+    QToolButton *detailModeButton = fileDialog->findChild<QToolButton*>("detailModeButton");
+    detailModeButton->hide();
+
+    QToolButton *forwardButton = fileDialog->findChild<QToolButton*>("forwardButton");
+    forwardButton->hide();
+
+    QToolButton *listModeButton = fileDialog->findChild<QToolButton*>("listModeButton");
+    listModeButton->hide();
+
+    QToolButton *newFolderButton = fileDialog->findChild<QToolButton*>("newFolderButton");
+    newFolderButton->hide();
+
+    QToolButton *toParentButton = fileDialog->findChild<QToolButton*>("toParentButton");
+    toParentButton->hide();
+
+    QDialogButtonBox *buttonBox = fileDialog->findChild<QDialogButtonBox*>("buttonBox");
+    //buttonBox->hide();
+    buttonBox->setOrientation(Qt::Horizontal);
+
+    QComboBox *fileTypeCombo = fileDialog->findChild<QComboBox*>("fileTypeCombo");
+    fileTypeCombo->hide();
+
 	fileDialog->setWindowTitle(tr("Open File"));
-	fileDialog->setDirectory("/media/mmcblk0p6/");
+    //fileDialog->setDirectory("/media/mmcblk0p6/");
+    fileDialog->setDirectory("/home/jc46/Videos/");
 	fileDialog->setStyleSheet ("font: 32pt \"Courier\";");
-	fileDialog->setWindowFlags(Qt::Window);
-	fileDialog->showFullScreen();
-	fileDialog->setViewMode(QFileDialog::List);
+    fileDialog->setWindowFlags(Qt::Window);
+    fileDialog->showFullScreen();
+    fileDialog->setViewMode(QFileDialog::List);
 	if(fileDialog->exec() == QDialog::Accepted) {
                 QStringList fileNames = fileDialog->selectedFiles();
     addToPlaylist(fileNames);
@@ -164,7 +204,7 @@ void csrplayer::open()
 
 #ifdef USE_V4L2sink
 #ifdef ENABLE_PLAYLISTVIEW
-    player->setOverlay(ui->videoWidget->geometry().y(), ui->videoWidget->geometry().x(), ui->videoWidget->geometry().width(), ui->videoWidget->geometry().height());
+    //player->setOverlay(ui->videoWidget->geometry().y(), ui->videoWidget->geometry().x(), ui->videoWidget->geometry().width(), ui->videoWidget->geometry().height());
 #else
     int x, y, w, h;
 
