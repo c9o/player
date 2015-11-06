@@ -45,7 +45,7 @@
 #include <QWidget>
 #include "clickslider.h"
 
-#define DEBUG_OPEN
+//#define DEBUG_OPEN
 
 QT_BEGIN_NAMESPACE
 class QAbstractButton;
@@ -68,6 +68,7 @@ public slots:
     void setState(QMediaPlayer::State state);
     void setVolume(int volume);
     void setMuted(bool muted);
+    void setMode(int mode);
 
 signals:
     void play();
@@ -77,10 +78,12 @@ signals:
     void previous();
     void changeVolume(int volume);
     void changeMuting(bool muting);
+    void changeMode(int playMode);
 
 private slots:
     void playClicked();
     void muteClicked();
+    void modeClicked();
 
 private:
     QMediaPlayer::State playerState;
@@ -90,7 +93,9 @@ private:
     QAbstractButton *nextButton;
     QAbstractButton *previousButton;
     QAbstractButton *muteButton;
+    QAbstractButton *modeButton;
     ClickSlider *volumeSlider;
+    int playMode;
 };
 
 #endif // PLAYERCONTROLS_H

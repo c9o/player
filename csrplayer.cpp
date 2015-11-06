@@ -28,6 +28,7 @@ csrplayer::csrplayer(QWidget *parent)
     player = new QMediaPlayer(this);
     // owned by PlaylistModel
     playlist = new QMediaPlaylist();
+    playlist->setPlaybackMode(QMediaPlaylist::CurrentItemOnce);
     player->setPlaylist(playlist);
 //! [create-objs]
 
@@ -69,12 +70,12 @@ csrplayer::csrplayer(QWidget *parent)
 
     connect(ui->slider, SIGNAL(sliderMoved(int)), this, SLOT(seek(int)));
 
-    ui->openButton->setIcon(style()->standardIcon(QStyle::SP_ComputerIcon));
+    ui->openButton->setIcon(QIcon(":/icons/resources/ic_open.png"));
     ui->openButton->setIconSize(QSize(40, 40));
 	ui->openButton->setEnabled(true);
     connect(player, SIGNAL(stateChanged(QMediaPlayer::State)),
             this, SLOT(setOpenEnabled(QMediaPlayer::State)));
-    ui->closeButton->setIcon(style()->standardIcon(QStyle::SP_DialogCloseButton));
+    ui->closeButton->setIcon(QIcon(":/icons/resources/ic_close.png"));
     ui->closeButton->setIconSize(QSize(40, 40));
     connect(ui->openButton, SIGNAL(clicked()), this, SLOT(open()));
 
@@ -89,6 +90,7 @@ csrplayer::csrplayer(QWidget *parent)
     connect(ui->controls, SIGNAL(previous()), this, SLOT(previousClicked()));
     connect(ui->controls, SIGNAL(changeVolume(int)), player, SLOT(setVolume(int)));
     connect(ui->controls, SIGNAL(changeMuting(bool)), player, SLOT(setMuted(bool)));
+    connect(ui->controls, SIGNAL(changeMode(int)), this, SLOT(setMode(int)));
 
     connect(ui->controls, SIGNAL(stop()), ui->videoWidget, SLOT(update()));
 
@@ -96,6 +98,7 @@ csrplayer::csrplayer(QWidget *parent)
             ui->controls, SLOT(setState(QMediaPlayer::State)));
     connect(player, SIGNAL(volumeChanged(int)), ui->controls, SLOT(setVolume(int)));
     connect(player, SIGNAL(mutedChanged(bool)), ui->controls, SLOT(setMuted(bool)));
+    connect(this, SIGNAL(playModeChanged(int)), ui->controls, SLOT(setMode(int)));
 
     if (!player->isAvailable()) {
         QMessageBox::warning(this, tr("Service not available"),
@@ -137,19 +140,17 @@ void csrplayer::open()
 #if 1
     //QStringList fileNames = QFileDialog::getOpenFileNames(this, tr("Open Files"));
     //addToPlaylist(fileNames);
+
 	QFileDialog *fileDialog = new QFileDialog(this);
     fileDialog->setOption(QFileDialog::DontUseNativeDialog,true);
 
     QLabel *fileTypeLabel = fileDialog->findChild<QLabel*>("fileTypeLabel");
-    //qDebug() << "Label" << fileTypeLabel->text();
     fileTypeLabel->hide();
 
     QLabel *fileNameLabel = fileDialog->findChild<QLabel*>("fileNameLabel");
-    //qDebug() << "Label" << fileNameLabel->text();
     fileNameLabel->hide();
 
     QLabel *lookInLabel = fileDialog->findChild<QLabel*>("lookInLabel");
-    //qDebug() << "Label" << lookInLabel->text();
     lookInLabel->hide();
 
     QToolButton *backButton = fileDialog->findChild<QToolButton*>("backButton");
@@ -204,7 +205,7 @@ void csrplayer::open()
 
 #ifdef USE_V4L2sink
 #ifdef ENABLE_PLAYLISTVIEW
-    //player->setOverlay(ui->videoWidget->geometry().y(), ui->videoWidget->geometry().x(), ui->videoWidget->geometry().width(), ui->videoWidget->geometry().height());
+    player->setOverlay(ui->videoWidget->geometry().y(), ui->videoWidget->geometry().x(), ui->videoWidget->geometry().width(), ui->videoWidget->geometry().height());
 #else
     int x, y, w, h;
 
@@ -320,6 +321,41 @@ void csrplayer::previousClicked()
         player->setPosition(0);
 }
 
+void csrplayer::setMode(int mode)
+{
+#ifdef DEBUG_OPEN
+    qDebug() << "Set mode" << mode;
+    qDebug() << "Current play mode is " << playlist->playbackMode();
+#endif
+
+    switch (mode) {
+    case 0:
+        playlist->setPlaybackMode(QMediaPlaylist::CurrentItemOnce);
+        emit playModeChanged(0);
+        break;
+    case 1:
+        playlist->setPlaybackMode(QMediaPlaylist::CurrentItemInLoop);
+        emit playModeChanged(1);
+        break;
+    case 2:
+        playlist->setPlaybackMode(QMediaPlaylist::Sequential);
+        emit playModeChanged(2);
+        break;
+    case 3:
+        playlist->setPlaybackMode(QMediaPlaylist::Loop);
+        emit playModeChanged(3);
+        break;
+    case 4:
+        playlist->setPlaybackMode(QMediaPlaylist::Random);
+        emit playModeChanged(4);
+        break;
+    default:
+        playlist->setPlaybackMode(QMediaPlaylist::CurrentItemOnce);
+        emit playModeChanged(0);
+        break;
+    }
+}
+
 void csrplayer::jump(const QModelIndex &index)
 {
     if (index.isValid()) {
@@ -331,6 +367,7 @@ void csrplayer::jump(const QModelIndex &index)
 void csrplayer::playlistPositionChanged(int currentItem)
 {
     QUrl fileUrl = playlistModel->playlist()->currentMedia().canonicalUrl();
+#if 0
 #ifdef ENABLE_PLAYLISTVIEW
     playlistView->setCurrentIndex(playlistModel->index(currentItem, 0));
     ui->label->setText(fileUrl.fileName());
@@ -341,6 +378,7 @@ void csrplayer::playlistPositionChanged(int currentItem)
         dispName += "    ";
 
     ui->label->setText(dispName);
+#endif
 #endif
 
 #ifdef DEBUG_OPEN

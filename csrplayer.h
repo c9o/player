@@ -23,7 +23,7 @@ class csrplayer;
 }
 QT_END_NAMESPACE
 
-#define ENABLE_PLAYLISTVIEW
+//#define ENABLE_PLAYLISTVIEW
 #define USE_V4L2sink
 #define DEFAULE_W 1920
 #define DEFAULT_H 1080
@@ -37,6 +37,7 @@ public:
     ~csrplayer();
 
 signals:
+    void playModeChanged(int mode);
 
 private slots:
     void open();
@@ -46,6 +47,7 @@ private slots:
     void metaDataChanged();
 
     void previousClicked();
+    void setMode(int mode);
 
     void setOpenEnabled(QMediaPlayer::State state);
     void seek(int seconds);
