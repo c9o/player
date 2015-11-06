@@ -37,6 +37,7 @@ public:
     ~csrplayer();
 
 signals:
+    void playModeChanged(int mode);
 
 private slots:
     void open();
@@ -46,6 +47,7 @@ private slots:
     void metaDataChanged();
 
     void previousClicked();
+    void setMode(int mode);
 
     void setOpenEnabled(QMediaPlayer::State state);
     void seek(int seconds);

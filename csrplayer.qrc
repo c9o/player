@@ -1,5 +1,21 @@
 <RCC>
     <qresource prefix="/icons">
         <file>resources/ic_slider.png</file>
+        <file>resources/ic_close.png</file>
+        <file>resources/ic_loop.png</file>
+        <file>resources/ic_mute.png</file>
+        <file>resources/ic_mute1.png</file>
+        <file>resources/ic_mute2.png</file>
+        <file>resources/ic_mute3.png</file>
+        <file>resources/ic_next.png</file>
+        <file>resources/ic_open.png</file>
+        <file>resources/ic_pause.png</file>
+        <file>resources/ic_play.png</file>
+        <file>resources/ic_previous.png</file>
+        <file>resources/ic_random.png</file>
+        <file>resources/ic_single.png</file>
+        <file>resources/ic_singleloop.png</file>
+        <file>resources/ic_stop.png</file>
+        <file>resources/ic_sequential.png</file>
     </qresource>
 </RCC>
