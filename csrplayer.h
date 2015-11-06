@@ -19,7 +19,7 @@ class QVideoProbe;
 class QVideoWidget;
 class PlaylistModel;
 namespace Ui {
-class csrplayer;
+	class csrplayer;
 }
 QT_END_NAMESPACE
 
@@ -30,55 +30,55 @@ QT_END_NAMESPACE
 
 class csrplayer : public QMainWindow
 {
-    Q_OBJECT
+	Q_OBJECT
 
-public:
-    csrplayer(QWidget *parent = 0);
-    ~csrplayer();
+	public:
+		csrplayer(QWidget *parent = 0);
+		~csrplayer();
 
 signals:
-    void playModeChanged(int mode);
+		void playModeChanged(int mode);
 
-private slots:
-    void open();
-    void on_closeButton_clicked();
-    void durationChanged(qint64 duration);
-    void positionChanged(qint64 progress);
-    void metaDataChanged();
+	private slots:
+		void open();
+		void on_closeButton_clicked();
+		void durationChanged(qint64 duration);
+		void positionChanged(qint64 progress);
+		void metaDataChanged();
 
-    void previousClicked();
-    void setMode(int mode);
+		void previousClicked();
+		void setMode(int mode);
 
-    void setOpenEnabled(QMediaPlayer::State state);
-    void seek(int seconds);
-    void jump(const QModelIndex &index);
-    void playlistPositionChanged(int);
+		void setOpenEnabled(QMediaPlayer::State state);
+		void seek(int seconds);
+		void jump(const QModelIndex &index);
+		void playlistPositionChanged(int);
 
-    void statusChanged(QMediaPlayer::MediaStatus status);
-    void bufferingProgress(int progress);
-    void videoAvailableChanged(bool available);
+		void statusChanged(QMediaPlayer::MediaStatus status);
+		void bufferingProgress(int progress);
+		void videoAvailableChanged(bool available);
 
-    void displayErrorMessage();
-    void addToPlaylist(const QStringList &fileNames);
+		void displayErrorMessage();
+		void addToPlaylist(const QStringList &fileNames);
 
-private:
-    void setTrackInfo(const QString &info);
-    void setStatusInfo(const QString &info);
-    void handleCursor(QMediaPlayer::MediaStatus status);
-    void updateDurationInfo(qint64 currentInfo);
+	private:
+		void setTrackInfo(const QString &info);
+		void setStatusInfo(const QString &info);
+		void handleCursor(QMediaPlayer::MediaStatus status);
+		void updateDurationInfo(qint64 currentInfo);
 
-    Ui::csrplayer *ui;
-    QMediaPlayer *player;
-    QMediaPlaylist *playlist;
-    QLabel *coverLabel;
+		Ui::csrplayer *ui;
+		QMediaPlayer *player;
+		QMediaPlaylist *playlist;
+		QLabel *coverLabel;
 
-    PlaylistModel *playlistModel;
+		PlaylistModel *playlistModel;
 #ifdef ENABLE_PLAYLISTVIEW
-    QListView *playlistView;
+		QListView *playlistView;
 #endif
-    QString trackInfo;
-    QString statusInfo;
-    qint64 duration;
+		QString trackInfo;
+		QString statusInfo;
+		qint64 duration;
 };
 
 #endif // CSRPLAYER_H

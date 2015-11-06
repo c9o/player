@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
 {
 	QApplication app(argc, argv);
 
-    csrplayer player;
+	csrplayer player;
 	player.resize(800,480);
 	player.showFullScreen();
 	//player.show();
