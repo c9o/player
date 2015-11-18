@@ -199,7 +199,7 @@ void csrplayer::open()
 #endif
 
 	fileDialog->setWindowTitle(tr("Open File"));
-	fileDialog->setDirectory("/media/mmcblk0p6/");
+    fileDialog->setDirectory("/media/mmcblk0p6/Video/");
 	fileDialog->setStyleSheet ("font: 32pt \"Courier\";");
 	fileDialog->setWindowFlags(Qt::Window);
 	fileDialog->showFullScreen();
