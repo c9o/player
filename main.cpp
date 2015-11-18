@@ -91,7 +91,7 @@ int main(int argc, char *argv[])
     }
 	QApplication app(argc, argv);
 
-	csrplayer player;
+    csrplayer player((QWidget*)0, messageQueueID1, messageQueueID2);
 	player.resize(800,480);
 	player.showFullScreen();
 	//player.show();

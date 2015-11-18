@@ -15,10 +15,12 @@
 #include <QDebug>
 #endif
 
-csrplayer::csrplayer(QWidget *parent)
-	: QMainWindow(parent)
+csrplayer::csrplayer(QWidget *parent, int id1, int id2)
+    : QMainWindow(parent)
 	, ui(new Ui::csrplayer)
-	, coverLabel(0)
+    , coverLabel(0)
+    , id1(id1)
+    , id2(id2)
 {
 #ifdef DEBUG_OPEN
 	qDebug() << "player created";
@@ -79,7 +81,7 @@ csrplayer::csrplayer(QWidget *parent)
             this, SLOT(setOpenEnabled(QMediaPlayer::State)));
     ui->minimizeButton->setIcon(QIcon(":/icons/resources/ic_minimize.png"));
     ui->minimizeButton->setIconSize(QSize(40, 40));
-    ui->minimizeButton->setEnabled(true);
+    ui->minimizeButton->setVisible(false);
     connect(ui->minimizeButton, SIGNAL(clicked()), this, SLOT(playerMinimize()));
     ui->closeButton->setIcon(QIcon(":/icons/resources/ic_close.png"));
     ui->closeButton->setIconSize(QSize(40, 40));
@@ -109,6 +111,7 @@ csrplayer::csrplayer(QWidget *parent)
     m_pMsgThread = new MsgThread(this, id1, id2);
     if (id1 != -1 && id2 != -1)
     {
+        ui->minimizeButton->setVisible(true);
         connect(m_pMsgThread, SIGNAL(appResume()), this, SLOT(playerShow()));
         connect(this, SIGNAL(appPaused()), m_pMsgThread, SLOT(onAppPaused()));
         m_pMsgThread->start();
@@ -125,11 +128,7 @@ csrplayer::csrplayer(QWidget *parent)
 #endif
 	}
 
-	metaDataChanged();
-
-	QStringList arguments = qApp->arguments();
-	arguments.removeAt(0);
-	addToPlaylist(arguments);
+    metaDataChanged();
 }
 
 csrplayer::~csrplayer()
@@ -224,7 +223,7 @@ void csrplayer::open()
 #ifdef USE_V4L2sink
 #ifdef ENABLE_PLAYLISTVIEW
     player->setOverlay(ui->videoWidget->geometry().y(), ui->videoWidget->geometry().x(), ui->videoWidget->geometry().width(), ui->videoWidget->geometry().height());
-#els
+#else
 
     if (ui->videoWidget->geometry().width() * DEFAULT_H > ui->videoWidget->geometry().height() * DEFAULE_W)
     {

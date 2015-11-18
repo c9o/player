@@ -34,7 +34,7 @@ class csrplayer : public QMainWindow
 	Q_OBJECT
 
 	public:
-		csrplayer(QWidget *parent = 0);
+		csrplayer(QWidget *parent = 0, int id1 = 0, int id2 = 0);
 		~csrplayer();
 
 	signals:
