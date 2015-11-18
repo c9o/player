@@ -17,5 +17,6 @@
         <file>resources/ic_singleloop.png</file>
         <file>resources/ic_stop.png</file>
         <file>resources/ic_sequential.png</file>
+        <file>resources/ic_minimize.png</file>
     </qresource>
 </RCC>

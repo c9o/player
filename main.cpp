@@ -41,9 +41,54 @@
 #include "csrplayer.h"
 
 #include <QApplication>
+#include "getopt.h"
+
+#define APP_MGR_PROCESS_NAME "AppMgr"
+#define NATIVE_APP_MSG_QID_ARG "nMsgId"
+#define APP_MANAGER_MSG_QID_ARG "rMsgId"
 
 int main(int argc, char *argv[])
 {
+
+    /* Response Msg Queue id from application to AppMgr */
+    /* AppMgr (waiting on respAppMqId)<---Sends--- Application */
+    int messageQueueID1 = -1;
+
+    /* Send Msg Queue id to launched application */
+    /* AppMgr ----Sends---> Application (waiting on sendAppMqId) */
+    int messageQueueID2 = -1;
+
+    /* Parse args and get required msg queue id's :*/
+    struct option long_options[] =
+    {
+        /* Ignore */
+    {"platform", required_argument, 0, 'p'},
+    {"plugin", required_argument, 0, 'P'},
+    /* Args to parse */
+    /* AppMgr <--- Application */
+    {NATIVE_APP_MSG_QID_ARG, required_argument, 0, 'n'},
+    /* AppMgr ---> Application */
+    {APP_MANAGER_MSG_QID_ARG, required_argument, 0, 'r'},
+    };
+
+    int c;
+    int opt_index = 0;
+    while ((c = getopt_long_only(argc, argv, "n:r:p:P", long_options, &opt_index)) != -1)
+    {
+        switch (c)
+        {
+        case 'n':
+            printf("App Response MsgId: %s\n", optarg);
+            messageQueueID1 = atoi(optarg);
+            break;
+        case 'r':
+            printf("App Receive MsgId: %s\n", optarg);
+            messageQueueID2 = atoi(optarg);
+            break;
+        default:
+            break;
+        }
+    }
 	QApplication app(argc, argv);
 
 	csrplayer player;
