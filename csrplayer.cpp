@@ -75,6 +75,10 @@ csrplayer::csrplayer(QWidget *parent)
 	ui->openButton->setEnabled(true);
     connect(player, SIGNAL(stateChanged(QMediaPlayer::State)),
             this, SLOT(setOpenEnabled(QMediaPlayer::State)));
+    ui->minimizeButton->setIcon(QIcon(":/icons/resources/ic_minimize.png"));
+    ui->minimizeButton->setIconSize(QSize(40, 40));
+    ui->minimizeButton->setEnabled(true);
+    connect(ui->minimizeButton, SIGNAL(clicked()), this, SLOT(playerMinimize()));
     ui->closeButton->setIcon(QIcon(":/icons/resources/ic_close.png"));
     ui->closeButton->setIconSize(QSize(40, 40));
     connect(ui->openButton, SIGNAL(clicked()), this, SLOT(open()));
@@ -99,6 +103,14 @@ csrplayer::csrplayer(QWidget *parent)
     connect(player, SIGNAL(volumeChanged(int)), ui->controls, SLOT(setVolume(int)));
     connect(player, SIGNAL(mutedChanged(bool)), ui->controls, SLOT(setMuted(bool)));
     connect(this, SIGNAL(playModeChanged(int)), ui->controls, SLOT(setMode(int)));
+
+    m_pMsgThread = new MsgThread(this, id1, id2);
+    if (id1 != -1 && id2 != -1)
+    {
+        connect(m_pMsgThread, SIGNAL(appResume()), this, SLOT(playerShow()));
+        connect(this, SIGNAL(appPaused()), m_pMsgThread, SLOT(onAppPaused()));
+        m_pMsgThread->start();
+    }
 
     if (!player->isAvailable()) {
         QMessageBox::warning(this, tr("Service not available"),
@@ -128,6 +140,10 @@ csrplayer::~csrplayer()
 	delete playlist;
 	delete coverLabel;
     delete playlistModel;
+#ifdef ENABLE_PLAYLISTVIEW
+    delete playlistView;
+#endif
+    delete m_pMsgThread;
 }
 
 void csrplayer::open()
@@ -205,8 +221,7 @@ void csrplayer::open()
 #ifdef USE_V4L2sink
 #ifdef ENABLE_PLAYLISTVIEW
     player->setOverlay(ui->videoWidget->geometry().y(), ui->videoWidget->geometry().x(), ui->videoWidget->geometry().width(), ui->videoWidget->geometry().height());
-#else
-    int x, y, w, h;
+#els
 
     if (ui->videoWidget->geometry().width() * DEFAULT_H > ui->videoWidget->geometry().height() * DEFAULE_W)
     {
@@ -274,6 +289,19 @@ void csrplayer::addToPlaylist(const QStringList& fileNames)
             }
         }
     }
+}
+
+void csrplayer::playerMinimize()
+{
+    player->setOverlay(0, 0, 1, 1);
+    hide();
+    emit appPaused();
+}
+
+void csrplayer::playerShow()
+{
+    show();
+    player->setOverlay(y, x, w, h);
 }
 
 void csrplayer::durationChanged(qint64 duration)

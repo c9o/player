@@ -12,6 +12,7 @@ HEADERS = \
     csrplayer.h \
     clickslider.h \
     filedialog.h \
+    msgthread.h \
     playercontrols.h \
     playlistmodel.h \
     ticker.h \
@@ -20,6 +21,7 @@ SOURCES = main.cpp \
     csrplayer.cpp \
     clickslider.cpp \
     filedialog.cpp \
+    msgthread.cpp \
     playercontrols.cpp \
     playlistmodel.cpp \
     ticker.cpp \

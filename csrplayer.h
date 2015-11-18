@@ -1,6 +1,7 @@
 #ifndef CSRPLAYER_H
 #define CSRPLAYER_H
 
+#include "msgthread.h"
 #include "videowidget.h"
 #include "ui_csrplayer.h"
 #include <QListView>
@@ -38,6 +39,7 @@ public:
 
 signals:
     void playModeChanged(int mode);
+    void appPaused();
 
 private slots:
     void open();
@@ -61,6 +63,9 @@ private slots:
     void displayErrorMessage();
     void addToPlaylist(const QStringList &fileNames);
 
+    void playerMinimize();
+    void playerShow();
+
 private:
     void setTrackInfo(const QString &info);
     void setStatusInfo(const QString &info);
@@ -79,6 +84,10 @@ private:
     QString trackInfo;
     QString statusInfo;
     qint64 duration;
+
+    int x, y, w, h;
+    MsgThread *m_pMsgThread;
+    int id1, id2;
 };
 
 #endif // CSRPLAYER_H
