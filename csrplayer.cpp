@@ -11,16 +11,20 @@
 #include <QtWidgets>
 #include <QMediaContent>
 
+#include <fstream>
+#define configFileName "/sys/devices/platform/sirfsoc_vdss.0/lcd0-screen0/screen_toplayer"
+using namespace std;
+
 #ifdef DEBUG_OPEN
 #include <QDebug>
 #endif
 
 csrplayer::csrplayer(QWidget *parent, int id1, int id2)
-    : QMainWindow(parent)
+	: QMainWindow(parent)
 	, ui(new Ui::csrplayer)
-    , coverLabel(0)
-    , id1(id1)
-    , id2(id2)
+	, coverLabel(0)
+	, id1(id1)
+	, id2(id2)
 {
 #ifdef DEBUG_OPEN
 	qDebug() << "player created";
@@ -77,58 +81,62 @@ csrplayer::csrplayer(QWidget *parent, int id1, int id2)
 	ui->openButton->setIcon(QIcon(":/icons/resources/ic_open.png"));
 	ui->openButton->setIconSize(QSize(40, 40));
 	ui->openButton->setEnabled(true);
-    connect(player, SIGNAL(stateChanged(QMediaPlayer::State)),
-            this, SLOT(setOpenEnabled(QMediaPlayer::State)));
-    ui->minimizeButton->setIcon(QIcon(":/icons/resources/ic_minimize.png"));
-    ui->minimizeButton->setIconSize(QSize(40, 40));
-    ui->minimizeButton->setVisible(false);
-    connect(ui->minimizeButton, SIGNAL(clicked()), this, SLOT(playerMinimize()));
-    ui->closeButton->setIcon(QIcon(":/icons/resources/ic_close.png"));
-    ui->closeButton->setIconSize(QSize(40, 40));
-    connect(ui->openButton, SIGNAL(clicked()), this, SLOT(open()));
+	connect(player, SIGNAL(stateChanged(QMediaPlayer::State)),
+			this, SLOT(setOpenEnabled(QMediaPlayer::State)));
+	ui->minimizeButton->setIcon(QIcon(":/icons/resources/ic_minimize.png"));
+	ui->minimizeButton->setIconSize(QSize(40, 40));
+	ui->minimizeButton->setVisible(false);
+	connect(ui->minimizeButton, SIGNAL(clicked()), this, SLOT(playerMinimize()));
+	ui->closeButton->setIcon(QIcon(":/icons/resources/ic_close.png"));
+	ui->closeButton->setIconSize(QSize(40, 40));
+	connect(ui->openButton, SIGNAL(clicked()), this, SLOT(open()));
 
-    ui->controls->setState(player->state());
-    ui->controls->setVolume(player->volume());
-    ui->controls->setMuted(ui->controls->isMuted());
+	ui->controls->setState(player->state());
+	ui->controls->setVolume(player->volume());
+	ui->controls->setMuted(ui->controls->isMuted());
 
-    connect(ui->controls, SIGNAL(play()), player, SLOT(play()));
-    connect(ui->controls, SIGNAL(pause()), player, SLOT(pause()));
-    connect(ui->controls, SIGNAL(stop()), player, SLOT(stop()));
-    connect(ui->controls, SIGNAL(next()), playlist, SLOT(next()));
-    connect(ui->controls, SIGNAL(previous()), this, SLOT(previousClicked()));
-    connect(ui->controls, SIGNAL(changeVolume(int)), player, SLOT(setVolume(int)));
-    connect(ui->controls, SIGNAL(changeMuting(bool)), player, SLOT(setMuted(bool)));
-    connect(ui->controls, SIGNAL(changeMode(int)), this, SLOT(setMode(int)));
+	connect(ui->controls, SIGNAL(play()), player, SLOT(play()));
+	connect(ui->controls, SIGNAL(pause()), player, SLOT(pause()));
+	connect(ui->controls, SIGNAL(stop()), player, SLOT(stop()));
+	connect(ui->controls, SIGNAL(next()), playlist, SLOT(next()));
+	connect(ui->controls, SIGNAL(previous()), this, SLOT(previousClicked()));
+	connect(ui->controls, SIGNAL(changeVolume(int)), player, SLOT(setVolume(int)));
+	connect(ui->controls, SIGNAL(changeMuting(bool)), player, SLOT(setMuted(bool)));
+	connect(ui->controls, SIGNAL(changeMode(int)), this, SLOT(setMode(int)));
 
-    connect(ui->controls, SIGNAL(stop()), ui->videoWidget, SLOT(update()));
+	connect(ui->controls, SIGNAL(stop()), ui->videoWidget, SLOT(update()));
 
-    connect(player, SIGNAL(stateChanged(QMediaPlayer::State)),
-            ui->controls, SLOT(setState(QMediaPlayer::State)));
-    connect(player, SIGNAL(volumeChanged(int)), ui->controls, SLOT(setVolume(int)));
-    connect(player, SIGNAL(mutedChanged(bool)), ui->controls, SLOT(setMuted(bool)));
-    connect(this, SIGNAL(playModeChanged(int)), ui->controls, SLOT(setMode(int)));
+	connect(player, SIGNAL(stateChanged(QMediaPlayer::State)),
+			ui->controls, SLOT(setState(QMediaPlayer::State)));
+	connect(player, SIGNAL(volumeChanged(int)), ui->controls, SLOT(setVolume(int)));
+	connect(player, SIGNAL(mutedChanged(bool)), ui->controls, SLOT(setMuted(bool)));
+	connect(this, SIGNAL(playModeChanged(int)), ui->controls, SLOT(setMode(int)));
 
-    m_pMsgThread = new MsgThread(this, id1, id2);
-    if (id1 != -1 && id2 != -1)
-    {
-        ui->minimizeButton->setVisible(true);
-        connect(m_pMsgThread, SIGNAL(appResume()), this, SLOT(playerShow()));
-        connect(this, SIGNAL(appPaused()), m_pMsgThread, SLOT(onAppPaused()));
-        m_pMsgThread->start();
-    }
+	m_pMsgThread = new MsgThread(this, id1, id2);
+	if (id1 != -1 && id2 != -1)
+	{
+		ui->minimizeButton->setVisible(true);
+		connect(m_pMsgThread, SIGNAL(appResume()), this, SLOT(playerShow()));
+		connect(this, SIGNAL(appPaused()), m_pMsgThread, SLOT(onAppPaused()));
+		m_pMsgThread->start();
+	}
 
-    if (!player->isAvailable()) {
-        QMessageBox::warning(this, tr("Service not available"),
-                             tr("The QMediaPlayer object does not have a valid service.\n"\
-                                "Please check the media service plugins are installed."));
+	if (!player->isAvailable()) {
+		QMessageBox::warning(this, tr("Service not available"),
+				tr("The QMediaPlayer object does not have a valid service.\n"\
+					"Please check the media service plugins are installed."));
 
-        ui->controls->setEnabled(false);
+		ui->controls->setEnabled(false);
 #ifdef ENABLE_PLAYLISTVIEW
 		playlistView->setEnabled(false);
 #endif
 	}
 
-    metaDataChanged();
+	metaDataChanged();
+	ofstream in;
+	in.open(configFileName, ios::trunc);
+	in << "1";
+	in.close();
 }
 
 csrplayer::~csrplayer()
@@ -140,11 +148,11 @@ csrplayer::~csrplayer()
 	delete player;
 	delete playlist;
 	delete coverLabel;
-    delete playlistModel;
+	delete playlistModel;
 #ifdef ENABLE_PLAYLISTVIEW
-    delete playlistView;
+	delete playlistView;
 #endif
-    delete m_pMsgThread;
+	delete m_pMsgThread;
 }
 
 void csrplayer::open()
@@ -198,7 +206,7 @@ void csrplayer::open()
 #endif
 
 	fileDialog->setWindowTitle(tr("Open File"));
-    fileDialog->setDirectory("/media/mmcblk0p6/Video/");
+	fileDialog->setDirectory("/media/mmcblk0p6/Video/");
 	fileDialog->setStyleSheet ("font: 32pt \"Courier\";");
 	fileDialog->setWindowFlags(Qt::Window);
 	fileDialog->showFullScreen();
@@ -222,23 +230,23 @@ void csrplayer::open()
 
 #ifdef USE_V4L2sink
 #ifdef ENABLE_PLAYLISTVIEW
-    player->setOverlay(ui->videoWidget->geometry().y(), ui->videoWidget->geometry().x(), ui->videoWidget->geometry().width(), ui->videoWidget->geometry().height());
+	player->setOverlay(ui->videoWidget->geometry().y(), ui->videoWidget->geometry().x(), ui->videoWidget->geometry().width(), ui->videoWidget->geometry().height());
 #else
 
-    if (ui->videoWidget->geometry().width() * DEFAULT_H > ui->videoWidget->geometry().height() * DEFAULE_W)
-    {
-        x = ui->videoWidget->geometry().x() + ui->videoWidget->geometry().width() / 2 - ui->videoWidget->geometry().height() * DEFAULE_W / 2 / DEFAULT_H;
-        y = ui->videoWidget->geometry().y();
-        w = ui->videoWidget->geometry().height() * DEFAULE_W / DEFAULT_H;
-        h = ui->videoWidget->geometry().height();
-    }
-    else
-    {
-        x = ui->videoWidget->geometry().x();
-        y = ui->videoWidget->geometry().y() + ui->videoWidget->geometry().height() / 2 - ui->videoWidget->geometry().width() * DEFAULT_H / 2 / DEFAULE_W;
-        w = ui->videoWidget->geometry().width();
-        h = ui->videoWidget->geometry().width() * DEFAULT_H / DEFAULE_W;
-    }
+	if (ui->videoWidget->geometry().width() * DEFAULT_H > ui->videoWidget->geometry().height() * DEFAULE_W)
+	{
+		x = ui->videoWidget->geometry().x() + ui->videoWidget->geometry().width() / 2 - ui->videoWidget->geometry().height() * DEFAULE_W / 2 / DEFAULT_H;
+		y = ui->videoWidget->geometry().y();
+		w = ui->videoWidget->geometry().height() * DEFAULE_W / DEFAULT_H;
+		h = ui->videoWidget->geometry().height();
+	}
+	else
+	{
+		x = ui->videoWidget->geometry().x();
+		y = ui->videoWidget->geometry().y() + ui->videoWidget->geometry().height() / 2 - ui->videoWidget->geometry().width() * DEFAULT_H / 2 / DEFAULE_W;
+		w = ui->videoWidget->geometry().width();
+		h = ui->videoWidget->geometry().width() * DEFAULT_H / DEFAULE_W;
+	}
 #ifdef DEBUG_OPEN
 	qDebug() << DEFAULE_W << DEFAULT_H;
 	qDebug() << x << y << w << h;
@@ -295,15 +303,28 @@ void csrplayer::addToPlaylist(const QStringList& fileNames)
 
 void csrplayer::playerMinimize()
 {
-    player->setOverlay(0, 0, 1, 1);
-    hide();
-    emit appPaused();
+#ifdef DEBUG_OPEN
+	qDebug() << "Minimize player";
+#endif
+	ofstream in;
+	in.open(configFileName, ios::trunc);
+	in << "0";
+	in.close();
+
+	hide();
+	emit appPaused();
 }
 
 void csrplayer::playerShow()
 {
-    show();
-    player->setOverlay(y, x, w, h);
+#ifdef DEBUG_OPEN
+	qDebug() << "Resume player";
+#endif
+	show();
+	ofstream in;
+	in.open(configFileName, ios::trunc);
+	in << "1";
+	in.close();
 }
 
 void csrplayer::durationChanged(qint64 duration)
